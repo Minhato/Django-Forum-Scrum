@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+  <title>Forum APP</title>
+  <style>
+    .nav-item a{
+      text-align: center;
+      
+    }
+    .nav-item{
+      padding-right:30px
+    }
+  </style>
+</head>
+<body>
+  <!-- Begin Navigation Bar-->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="/">
+      <!-- Here Company Icon is inserted-->
+      <img src="../media/Google-Logo.wine.png" style="width:120px">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavigation"
+      aria-controls="navbarNavigation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse">  </div>
+    <div class="collapse navbar-collapse" id="navbarNavigation">
+      <ul class="nav navbar-nav navbar-center">
+        <li class="nav-item">
+          <a class="nav-link " href="/">
+            <i class="bi bi-house" style="font-size: 2rem"></i>
+          </a>
+        </li>
+    </li>
+    </ul>
+    </div>
+    {% if user.is_authenticated%}
+    <!-- Displayed if User is logged in-->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="Menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ user.username }}
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Menu">
+          <a class="dropdown-item" href="">Profile</a>
+          <a class="dropdown-item" href="/admin/password_change">Change password</a>
+          <a class="dropdown-item" href="/create_post">Add Post</a> 
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/logout">Logout</a>
+        </div>
+      </li>
+    </ul>
+    {% else %}
+    <!-- Displayed if User is not logged in-->
+    <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a class="nav-link" href="/register">
+        <i class="bi bi-person-plus" style="font-size: 2rem"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/login">
+        <i class="bi bi-box-arrow-in-left" style="font-size: 2rem"></i>
+      </a>
+    </li>
+    {%endif%}
+
+    </ul>
+    </div>    
+  </nav>
+  <!-- End Navigation Bar-->
+  <div class="border-top my-3"></div> <!-- Border between Nav and Body-->
+  {% block content %}
+  {% endblock %}
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+{% block js %} {% endblock %}
+
+</html>

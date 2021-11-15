@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+<body>
+  <!-- ONly show the Posts if the User is logged in-->
+  {% if user.is_authenticated%}
+  <div class="main-content">
+    <div class="container mt-7">
+      <!-- Here Heading -->
+      <h2 class="mb-5">Hello {{user}}, here you can see all Posts</h2>
+      <!-- Here the Table begins -->
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <!-- Table Header -->
+              <h3 class="mb-0">Posts</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <!-- Table Headings per Row -->
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Viewed</th>
+                    <th scope="col">Last Updated</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Get all the Posts from the database and show them in the table -->
+                  {% for post in posts %}
+                  <tr>
+                    <th scope="row">
+                      {{post.title}}
+                        <small class="text-muted d-block">{{post.description}} </small>
+                    </th>
+                    <td>0</td>
+                    <td>{{post.date}}</td>
+                    <!-- This section is used later for Actions to the related post -->
+                    <td class="text-right">
+                      <div class="dropleft">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"  aria-expanded="false">
+                          <i class="bi bi-three-dots-vertical"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  {%endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {%endif%}
+</body>
+{% endblock %}
