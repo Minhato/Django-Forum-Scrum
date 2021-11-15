@@ -17,16 +17,13 @@
     .nav-item{
       padding-right:30px
     }
-
   </style>
 </head>
-<<<<<<< HEAD:forumapp/templates/base.html
-=======
-
 <body>
->>>>>>> master:forumapp/user/templates/base.html
+  <!-- Begin Navigation Bar-->
   <nav class="navbar navbar-expand-lg navbar-light">
     <a class="navbar-brand" href="/">
+      <!-- Here Company Icon is inserted-->
       <img src="../media/Google-Logo.wine.png" style="width:120px">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavigation"
@@ -45,63 +42,43 @@
     </ul>
     </div>
     {% if user.is_authenticated%}
+    <!-- Displayed if User is logged in-->
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="Menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {{ user.username }}
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Menu">
-          <a class="dropdown-item" href="/myprofile">Profile</a>
+          <a class="dropdown-item" href="">Profile</a>
           <a class="dropdown-item" href="/admin/password_change">Change password</a>
+          <a class="dropdown-item" href="/create_post">Add Post</a> 
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/admin/logout">Logout</a>
+          <a class="dropdown-item" href="/logout">Logout</a>
         </div>
       </li>
     </ul>
     {% else %}
+    <!-- Displayed if User is not logged in-->
     <ul class="navbar-nav ml-auto">
     <li class="nav-item">
       <a class="nav-link" href="/register">
         <i class="bi bi-person-plus" style="font-size: 2rem"></i>
       </a>
     </li>
-    <li class="nav-item {% block loginactive %} {% endblock loginactive %}">
+    <li class="nav-item">
       <a class="nav-link" href="/login">
         <i class="bi bi-box-arrow-in-left" style="font-size: 2rem"></i>
       </a>
     </li>
-    
-       <!--<ul class="navbar-nav mr-2">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href='#' id="navbarDropdown" role="button" data-toggle="dropdown">
-              Welcome {{request.user}}</a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item"  href="/logout">
-                <i class="bi bi-box-arrow-right" style="font-size: 2rem"></i>
-              </a>-->
     {%endif%}
 
     </ul>
-    </div>
+    </div>    
   </nav>
-  <div class="border-top my-3"></div>
-
-<<<<<<< HEAD:forumapp/templates/base.html
-<body>
-=======
-                </div>
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- End Navigation Bar-->
+  <div class="border-top my-3"></div> <!-- Border between Nav and Body-->
   {% block content %}
   {% endblock %}
-</body>
-{% block body %} {% endblock %}
->>>>>>> master:forumapp/user/templates/base.html
-
-{% block body %} {% endblock %}
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
   crossorigin="anonymous"></script>
