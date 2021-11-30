@@ -1,11 +1,13 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from user.forms import SignUpForm, PostForm
 from django.contrib import messages
 from django.views.generic import DetailView
 from .models import Post
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy, reverse
 import time
 
 # Create your views here.
@@ -87,3 +89,9 @@ def delete_post(request, post_id, user):
 	else:
 		messages.warning(request, "This Post was published by another user. You can only modify/delete your own!")
 	return redirect('home')
+
+def LikeView(request, pk):
+	post = get_object_or_404(Post, id= request.POST.get('post_id'))
+	post.likes.add(request.user)
+	#return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
+	return redirect('post-detail', post.pk)

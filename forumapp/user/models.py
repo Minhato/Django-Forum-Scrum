@@ -9,8 +9,6 @@ class Post(models.Model):
     content = HTMLField()
     date = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.title
+    likes = models.ManyToManyField(User, related_name='forum_post')
 
 # Create your models here.
