@@ -10,5 +10,7 @@ class Post(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.title
 
 # Create your models here.

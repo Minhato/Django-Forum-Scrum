@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="main-content">
+    <div class="container mt-7" style="width: 600px;">
+        <h2 class="mb-5" style="color: white;">...</h2>
+        <div class="row">
+            <div class="col">
+                <div class="card shadow">
+                    <div class="card-header border-0">
+                    <!-- Table Header -->
+                        <table>
+                            <tr>
+                                <td style="width: 40px;"><i class="bi bi-chat bi-large" style="font-size: 1.75rem;"></i></td>
+                                <td><h3 class="mb-0">{{ posts.title }}</h3></td>
+                            </tr>   
+                        </table>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                            <!-- Table Headings per Row -->
+                                <tr>
+                                    <td style="width: 56px; height:56px;"><img src="../media/test.jpeg" style="border-radius: 50%;" width="32" height="32"></td>
+                                    <th style="padding-left: 6px">@{{ posts.user }}</th>                                    
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="padding-left: 60px;">{{posts.content}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="border-color: white; padding-top: 40px; font-size: 10px; text-align: right;">{{posts.date}}</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

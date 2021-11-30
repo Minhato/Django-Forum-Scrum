@@ -1,9 +1,12 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from user.forms import SignUpForm, PostForm
 from django.contrib import messages
+from django.views.generic import DetailView
 from .models import Post
+import time
 
 # Create your views here.
 def home(request):
@@ -37,12 +40,13 @@ def login(request):
 			if user is not None:
 				login(request, user)
 				messages.info(request, f"You are now logged in as {username}.")
-				return redirect('home')
+				return redirect('home')				
 			else:
+				
 				messages.error(request,"Invalid username or password.")
 		else:
 			messages.error(request,"Invalid username or password.")
-	form = AuthenticationForm()
+	form = AuthenticationForm()				
 	return render(request=request, template_name="login.html", context={"login_form":form})
 
 def create_post(request):
@@ -63,3 +67,23 @@ def create_post(request):
         "title": "OZONE: Create New Post"
     })
 	return render(request, "create_post.html", context)
+
+def post_detail(request, pk):
+	posts = Post.objects.get(pk=pk)
+	#template_name = 'post_detail.html'
+	return render(request, 'post_detail.html', {'posts': posts})
+
+def delete_post(request, post_id, user):
+	field_value = 'user_id'
+	post = Post.objects.get(pk=post_id)
+	postuser = getattr(post, field_value)
+
+	user_obj = User.objects.get(username=user)
+	current_user = getattr(user_obj, 'id')
+
+	if postuser == current_user:
+		messages.success(request, "Your Post was successfully deleted")
+		post.delete()
+	else:
+		messages.warning(request, "This Post was published by another user. You can only modify/delete your own!")
+	return redirect('home')

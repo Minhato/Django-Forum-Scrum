@@ -1,5 +1,6 @@
 from django.urls import path, include
 from . import views
+from .views import post_detail
 from django.conf.urls import url
 #from mysite.core import views as core_views
 
@@ -8,6 +9,8 @@ urlpatterns = [
     path('register', views.signup, name='signup'),
     #path('', views.threads, name='home'),
     path("create_post", views.create_post, name='create_post'),
+    path('post/<int:pk>', views.post_detail, name='post-detail'),
+    path('delete_post/<post_id>/<user>', views.delete_post, name='delete-post')
     #path('login', views.login, name='login'),  
 ]
 

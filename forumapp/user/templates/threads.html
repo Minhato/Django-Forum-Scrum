@@ -2,7 +2,7 @@
 {% block content %}
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
 <body>
-  <!-- ONly show the Posts if the User is logged in-->
+  <!-- Only show the Posts if the User is logged in-->
   {% if user.is_authenticated%}
   <div class="main-content">
     <div class="container mt-7">
@@ -22,6 +22,7 @@
                   <!-- Table Headings per Row -->
                   <tr>
                     <th scope="col">Title</th>
+                    <th scope="col">Author</th>
                     <th scope="col">Viewed</th>
                     <th scope="col">Last Updated</th>
                     <th scope="col"></th>
@@ -32,9 +33,10 @@
                   {% for post in posts %}
                   <tr>
                     <th scope="row">
-                      {{post.title}}
-                        <small class="text-muted d-block">{{post.description}} </small>
+                      <a>{{post.title}}</a>
+                      <small class="text-muted d-block">{{post.description}} </small>
                     </th>
+                    <td>{{post.user}}</td>
                     <td>0</td>
                     <td>{{post.date}}</td>
                     <!-- This section is used later for Actions to the related post -->
@@ -44,8 +46,8 @@
                           <i class="bi bi-three-dots-vertical"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" href="#">Action</a>
-                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="{% url 'post-detail' post.pk %}">View Post</a>
+                          <a class="dropdown-item" href="{% url 'delete-post' post.id user %}">Delete Post</a>
                           <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                       </div>
