@@ -8,6 +8,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = HTMLField()
     date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now=True)
     approved = models.BooleanField(default=False)
 
 

@@ -79,6 +79,21 @@ def create_post(request):
 			return redirect('home')
 	context.update({
     	"form": form,
-        "title": "OZONE: Create New Post"
     })
 	return render(request, "create_post.html", context)
+
+
+def edit_thread(request, post_id):
+# Function for the Edit of an existing Thread
+    post = Post.objects.get(id=post_id)	
+    if request.method != 'POST':
+        form = PostForm(instance=post)
+
+    else:
+        form = PostForm(instance=post, data=request.POST) 
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+    context = {'post': post, 'form': form}
+    return render(request, 'edit_thread.html', context)

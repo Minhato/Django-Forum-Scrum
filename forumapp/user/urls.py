@@ -8,6 +8,7 @@ urlpatterns = [
     path('register', views.signup, name='signup'),
     #path('', views.threads, name='home'),
     path("create_post", views.create_post, name='create_post'),
+    path('edit/<int:post_id>', views.edit_thread, name='edit_thread'),
     #path('login', views.login, name='login'),  
 ]
 
