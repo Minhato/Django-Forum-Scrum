@@ -9,6 +9,10 @@ class Post(models.Model):
     content = HTMLField()
     date = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
-    likes = models.ManyToManyField(User, related_name='forum_post')
+    likes = models.ManyToManyField(User, related_name='forum_post_likes')
+    dislikes = models.ManyToManyField(User, related_name='forum_post_dislikes')
+    votes = models.IntegerField(default= 0)
+    def total_likes(self):
+        return self.likes.count()
 
 # Create your models here.

@@ -32,6 +32,11 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
+def nachricht(request):
+	user = request.user
+	nachricht = messages.info(request,f"You are now logged in as {user.username}.")
+	return nachricht
+
 def login(request):
 	if request.method == "POST":
 		form = AuthenticationForm(request, data=request.POST)
@@ -40,16 +45,19 @@ def login(request):
 			password = form.cleaned_data.get('password')
 			user = authenticate(username=username, password=password)
 			if user is not None:
+				print("test")
 				login(request, user)
-				messages.info(request, f"You are now logged in as {username}.")
-				return redirect('home')				
+				return redirect('home')	
+				#messages.info(request, f"You are now logged in as {username}.")		
 			else:
 				
 				messages.error(request,"Invalid username or password.")
 		else:
 			messages.error(request,"Invalid username or password.")
-	form = AuthenticationForm()				
+	form = AuthenticationForm()
+	nachricht()				
 	return render(request=request, template_name="login.html", context={"login_form":form})
+
 
 def create_post(request):
 #Here the logic behind the Create Post is done
@@ -90,8 +98,66 @@ def delete_post(request, post_id, user):
 		messages.warning(request, "This Post was published by another user. You can only modify/delete your own!")
 	return redirect('home')
 
-def LikeView(request, pk):
+def totallikes(request, pk):
 	post = get_object_or_404(Post, id= request.POST.get('post_id'))
+	print(post.pk)
+	nachricht =Post.objects.get(id = post.pk)
+	total_likes = nachricht.likes.count()
+	return total_likes
+
+def upvote(request, pk):
+	print("upvote drin post pk =")
+	post = get_object_or_404(Post, id= request.POST.get('post_id'))
+	print(post.pk)
 	post.likes.add(request.user)
+	print("die likes")
+	nachricht =Post.objects.get(id = post.pk)
+	alle_Nutzer_Dislike = post.dislikes.all()
+	if request.user in alle_Nutzer_Dislike:
+		print("bin drin")
+		post.dislikes.remove(request.user)
+	else:
+		print("bin nicht drin")
+	total_dislikes = nachricht.dislikes.count()
+	total_likes = nachricht.likes.count()
+	post.votes = total_likes - total_dislikes
+	post.save()			 
+	print(post.votes)
+	#return render(request,'post_detail.html', { 'all_likes': total_likes}) funktioniert nicht kp was für ein html reinkommt
 	#return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 	return redirect('post-detail', post.pk)
+
+
+def downvote(request, pk):
+	print("downvote drin post pk =")
+	post = get_object_or_404(Post, id= request.POST.get('post_id2'))
+	print(post.pk)
+	post.dislikes.add(request.user)
+	print("die dislikes")
+	nachricht =Post.objects.get(id = post.pk)
+	alle_Nutzer_like = post.likes.all()
+	if request.user in alle_Nutzer_like:
+		print("bin drin")
+		post.likes.remove(request.user)
+	else:
+		print("bin nicht drin")
+	total_dislikes = nachricht.dislikes.count()
+	total_likes = nachricht.likes.count()
+	post.votes = total_likes - total_dislikes
+	post.save()			 
+	print(post.votes)
+	#return render(request,'post_detail.html', { 'all_likes': total_likes}) funktioniert nicht kp was für ein html reinkommt
+	#return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
+	return redirect('post-detail', post.pk)
+
+class PostDetailView(DetailView):
+	model = Post
+	template_name = 'post_detail.html'
+	def get_context_data(self,*args, **kwargs):
+		#user_menu = User.objects.all()
+		totallikes = get_object_or_404(Post, id=self.kwargs('post_id'))
+		dielikes = Post.objects.get(id = self.kwargs('post_id'))
+
+		context = super(PostDetailView, self).get_context_data(**kwargs)
+		context["total_likes"] = dielikes
+		return context

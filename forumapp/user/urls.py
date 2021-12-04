@@ -1,6 +1,6 @@
 from django.urls import path, include
 from . import views
-from .views import LikeView, post_detail
+from .views import downvote, upvote, post_detail
 from django.conf.urls import url
 #from mysite.core import views as core_views
 
@@ -12,6 +12,7 @@ urlpatterns = [
     path('post/<int:pk>', views.post_detail, name='post-detail'),
     path('delete_post/<post_id>/<user>', views.delete_post, name='delete-post'),
     #path('login', views.login, name='login'),  
-    path('like/int:pk', LikeView, name= 'like_post'),
+    path('like/<int:pk>', upvote, name= 'like_post'),
+    path('dislike/<int:pk>', downvote, name= 'dislike_post'),
 ]
 

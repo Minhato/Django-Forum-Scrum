@@ -34,10 +34,15 @@
                             </thead>
                         </table>
                         <tr>
-                            <form action="{% url 'like_post' forum_post.id %}" method="POST">
+                            <form action="{% url 'like_post' posts.pk %}" method="POST">
                                 {% csrf_token %}
-                            <button type="submit", name="post_id", value="{{post.id}}", class="btn btn-primary btn-sm"> Like</button>
-                            </form> 
+                            <button type="submit", name="post_id", value="{{posts.id}}", class="btn btn-primary btn-sm">  &#128077</button>
+                            </form>
+                            Like/Dislike: {{ posts.votes }}
+                            <form action="{% url 'dislike_post' posts.pk %}" method="POST">
+                                {% csrf_token %}
+                            <button type="submit", name="post_id2", value="{{posts.id}}", class="btn btn-primary btn-sm">  &#128078 </button>
+                            </form>
                         </tr>
                     </div>                
                 </div>
