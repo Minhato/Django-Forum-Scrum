@@ -11,6 +11,7 @@ urlpatterns = [
     path("create_post", views.create_post, name='create_post'),
     path('post/<int:pk>', views.post_detail, name='post-detail'),
     path('delete_post/<post_id>/<user>', views.delete_post, name='delete-post'),
+    path('edit/<int:post_id>', views.edit_thread, name='edit_thread'),
     #path('login', views.login, name='login'),  
     path('like/<int:pk>', upvote, name= 'like_post'),
     path('dislike/<int:pk>', downvote, name= 'dislike_post'),
