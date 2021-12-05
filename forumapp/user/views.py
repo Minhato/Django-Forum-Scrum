@@ -10,7 +10,6 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 import time
 
-logger = logging.getLogger("meinLogger")
 # Create your views here.
 def home(request):
 	posts = Post.objects.all()
@@ -42,11 +41,6 @@ def nachricht(request):
 	return nachricht
 
 def login(request):
-	#TO:DO delete logs, kp wie man prints anschauen kann im terminal
-	print("hallo")
-	logging.info("Hallo")
-	logger.info("hallo2")
-	logging.error("TEST")
 	if request.method == "POST":
 		#nutzt das template von django
 		print("in POST ")
