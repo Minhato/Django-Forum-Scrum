@@ -149,15 +149,3 @@ def downvote(request, pk):
 	#return render(request,'post_detail.html', { 'all_likes': total_likes}) funktioniert nicht kp was für ein html reinkommt
 	#return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 	return redirect('post-detail', post.pk)
-
-class PostDetailView(DetailView):
-	model = Post
-	template_name = 'post_detail.html'
-	def get_context_data(self,*args, **kwargs):
-		#user_menu = User.objects.all()
-		totallikes = get_object_or_404(Post, id=self.kwargs('post_id'))
-		dielikes = Post.objects.get(id = self.kwargs('post_id'))
-
-		context = super(PostDetailView, self).get_context_data(**kwargs)
-		context["total_likes"] = dielikes
-		return context

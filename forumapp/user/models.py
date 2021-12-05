@@ -12,7 +12,4 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, related_name='forum_post_likes')
     dislikes = models.ManyToManyField(User, related_name='forum_post_dislikes')
     votes = models.IntegerField(default= 0)
-    def total_likes(self):
-        return self.likes.count()
-
 # Create your models here.
