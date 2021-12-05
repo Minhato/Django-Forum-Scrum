@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 import time
 
+logger = logging.getLogger("meinLogger")
 # Create your views here.
 def home(request):
 	posts = Post.objects.all()
@@ -20,12 +21,15 @@ def home(request):
 
 def signup(request):
     if request.method == 'POST':
+		#ruft die Methode SignupForm auf die wir geschrieben haben in forms.py 
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
+			#nutzt das authenticationForm von django 
             user = authenticate(username=username, password=raw_password)
+			#login auskommentiert da wir nur wollen dass man sich registriert ohne automatisches einloggen
             #login(request, user)
             return redirect('home')
     else:
@@ -38,11 +42,24 @@ def nachricht(request):
 	return nachricht
 
 def login(request):
+	#TO:DO delete logs, kp wie man prints anschauen kann im terminal
+	print("hallo")
+	logging.info("Hallo")
+	logger.info("hallo2")
+	logging.error("TEST")
 	if request.method == "POST":
+		#nutzt das template von django
+		print("in POST ")
 		form = AuthenticationForm(request, data=request.POST)
+		#um zu prüfen ob die Form richtig ist, idk ob nötig
 		if form.is_valid():
+			print("Form ist valid")
+			#return ein python objekt 
 			username = form.cleaned_data.get('username')
 			password = form.cleaned_data.get('password')
+			print("TEST")
+			print(username, " und passwort ", password )
+
 			user = authenticate(username=username, password=password)
 			if user is not None:
 				print("test")
