@@ -26,13 +26,22 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2" style="padding-left: 60px;">{{posts.content}}</td>
+
                                 </tr>
+                            
 
                                 <tr>
                                     <td colspan="2" style="border-color: white; padding-top: 40px; font-size: 10px; text-align: right;">{{posts.date}}</td>
                                 </tr>
+
+                                
                             </thead>
                         </table>
+
+                        {% if posts.image %} 
+                        <img src="{{ posts.image.url}}" width="300" height="200"> 
+                         {% endif %}
+                        
                         <tr>
                             <form action="{% url 'like_post' posts.pk %}" method="POST">
                                 {% csrf_token %}
@@ -47,7 +56,6 @@
                     </div>                
                 </div>
 
-                
             </div>
         </div>
     </div>

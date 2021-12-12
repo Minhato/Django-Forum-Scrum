@@ -4,9 +4,10 @@
 
 <h1 style="text-align:center; margin-block:50px; color:blue;">Hey {{user}}, Write something</h1>
 <!-- This is the Form for the Post-->
-<form method="POST" style="margin-left:150px;">
+<form method="POST" enctype="multipart/form-data" style="margin-left:150px;">
     {% csrf_token %}    
     {{form|crispy}}
+    {{posts.image}} 
     <input type="submit" value="Save"  style="margin-block:50px;">
 </form>
 

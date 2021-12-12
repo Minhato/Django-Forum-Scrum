@@ -13,4 +13,5 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, related_name='forum_post_likes')
     dislikes = models.ManyToManyField(User, related_name='forum_post_dislikes')
     votes = models.IntegerField(default= 0)
+    image = models.ImageField(blank = True, null = True, upload_to = 'image/%Y/%m/%D')
 # Create your models here.
