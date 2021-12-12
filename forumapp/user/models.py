@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from tinymce.models import HTMLField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Post(models.Model):
     title = models.CharField(max_length=20, unique=True)
@@ -13,4 +15,5 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, related_name='forum_post_likes')
     dislikes = models.ManyToManyField(User, related_name='forum_post_dislikes')
     votes = models.IntegerField(default= 0)
+
 # Create your models here.
