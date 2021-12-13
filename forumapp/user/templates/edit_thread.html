@@ -2,14 +2,12 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-
 <h1 style="text-align:center; margin-block:50px; color:blue;">Hey {{user}}, edit your Thread</h1>
-<!-- This is the Form for the Edit of an existing Thread-->
-
-  <form action="{% url 'edit_thread' post.id %}" method='post'>
-      {% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" value="Save"  style="margin-block:50px;">
-  </form>
+<!-- This is the Form for the Post-->
+<form action="{% url 'edit_thread' post.id user %}" method="POST" style="margin-left:150px;">
+    {% csrf_token %}    
+    {{form|crispy}}
+    <input type="submit" value="Save"  style="margin-block:50px;">
+</form>
 
 {% endblock content %}

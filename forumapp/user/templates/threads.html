@@ -48,7 +48,7 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                           <a class="dropdown-item" href="{% url 'post-detail' post.pk %}">View Post</a>
                           <a class="dropdown-item" href="{% url 'delete-post' post.id user %}">Delete Post</a>
-                          <a class="dropdown-item" href="{% url 'edit_thread' post.id %}">Edit Thread</a>
+                          <a class="dropdown-item" href="{% url 'edit_thread' post.id user %}">Edit Thread</a>
                           <a class="dropdown-item" href="#">Another action</a>
                           <a class="dropdown-item" href="#">Something else here</a>
                         </div>

@@ -93,6 +93,29 @@ def post_detail(request, pk):
 	#template_name = 'post_detail.html'
 	return render(request, 'post_detail.html', {'posts': posts})
 
+def edit_thread(request, post_id, user):
+	field_value = 'user_id'
+	post = Post.objects.get(pk=post_id)
+	postuser = getattr(post, field_value)
+
+	user_obj = User.objects.get(username=user)
+	current_user = getattr(user_obj, 'id')
+
+	if postuser == current_user:
+		if request.method != 'POST':
+			form=PostForm(instance=post)
+		
+		else:
+			form = PostForm(instance=post, data=request.POST)
+			if form.is_valid():
+				form.save()
+				return redirect('home')
+		context = {'post': post, 'form': form}
+		return render(request, 'edit_thread.html', context)
+	else:
+		messages.warning(request, "This Post was published by another user. You can only modify/delete your own!")
+	return redirect('home')
+
 def delete_post(request, post_id, user):
 	field_value = 'user_id'
 	post = Post.objects.get(pk=post_id)
@@ -160,17 +183,25 @@ def downvote(request, pk):
 	#return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 	return redirect('post-detail', post.pk)
 
-def edit_thread(request, post_id):
+
+
+
+
+
+
+
+
+#def edit_thread2(request, post_id):
 # Function for the Edit of an existing Thread
-    post = Post.objects.get(id=post_id)	
-    if request.method != 'POST':
-        form = PostForm(instance=post)
-
-    else:
-        form = PostForm(instance=post, data=request.POST) 
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-
-    context = {'post': post, 'form': form}
-    return render(request, 'edit_thread.html', context)
+#    post = Post.objects.get(id=post_id)	
+#    if request.method != 'POST':
+#        form = PostForm(instance=post)
+#
+#    else:
+#        form = PostForm(instance=post, data=request.POST) 
+#        if form.is_valid():
+#            form.save()
+#            return redirect('base.html')
+#
+#    context = {'post': post, 'form': form}
+#    return render(request, 'edit_thread.html', context)
