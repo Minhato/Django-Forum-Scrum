@@ -2,10 +2,10 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from user.forms import SignUpForm, PostForm
+from user.forms import SignUpForm, PostForm, ProfileForm
 from django.contrib import messages
 from django.views.generic import DetailView
-from .models import Post
+from .models import Post, Profile
 import time
 
 # Create your views here.
@@ -74,9 +74,8 @@ def post_detail(request, pk):
 	return render(request, 'post_detail.html', {'posts': posts})
 
 def delete_post(request, post_id, user):
-	field_value = 'user_id'
 	post = Post.objects.get(pk=post_id)
-	postuser = getattr(post, field_value)
+	postuser = getattr(post, 'user_id')
 
 	user_obj = User.objects.get(username=user)
 	current_user = getattr(user_obj, 'id')
@@ -87,3 +86,18 @@ def delete_post(request, post_id, user):
 	else:
 		messages.warning(request, "This Post was published by another user. You can only modify/delete your own!")
 	return redirect('home')
+
+def profile(request):
+	if request.method=="POST":
+		current_user = request.user
+		profile = Profile(user=current_user)
+		form = ProfileForm(data=request.POST, files=request.FILES, instance=profile)
+
+		if form.is_valid():
+			form.save()
+			profile_obj = form.instance
+			messages.success(request, "Your Profile Picture was updated.")
+			return render(request, "profile.html",{'obj': profile_obj})
+	else:
+		form=ProfileForm()	
+	return render(request, 'profile.html', {'form': form})

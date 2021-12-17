@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
 <h1 style="text-align:center; margin-block:50px; color:blue;">Hey {{user}}, Write something</h1>
 <!-- This is the Form for the Post-->
 <form method="POST" style="margin-left:150px;">
