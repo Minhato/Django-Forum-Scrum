@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Post #,Author
 from django.core.validators import RegexValidator
+from .models import Post, Profile
 
 class SignUpForm(UserCreationForm):
     letters = RegexValidator(r'^[a-zA-Z]+$', 'Only letter characters are allowed.')
@@ -28,3 +28,8 @@ class UpdateForm(forms.ModelForm):
         model = User
         fields = ['username']
 
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('image', )

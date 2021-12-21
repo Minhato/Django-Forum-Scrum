@@ -1,25 +1,47 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
 
-  <form method="post">
-    {% csrf_token %}
-    <h1>Login</h1>
-    <!-- {{form|crispy}}-->
-    <table>
-      <tr>
-        <td>{{ form.username.label_tag }}</td>     <!-- oder einfach Username -->
-        <td>{{ form.username }}</td>
-      </tr>
-      <tr>
-        <td>{{ form.password.label_tag }}</td>      <!-- oder einfach Password -->
-        <td>{{ form.password }}</td>
-      </tr>
-    </table>
-    <input type="submit" value="login" />
-    <p>  <a href="/user/templates/signup.html">Click here for registration</a></p>
-  </form>
-
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+<div class="main-content">
+  <div class="container mt-7" style="width: 600px;">
+    <div class="row">
+      <div class="col-lg-12 col-lg-offset-0">
+        <div class="row pad">
+          <div class="col-lg-12">
+            <div class="panel panel-primary">
+              <div class="shadow-sm p-3 mb-5 bg-white rounded">
+                <div class="card-body">
+                  <form method="post">
+                    {% csrf_token %}
+                    <!-- {{form|crispy}}-->
+                    <table>
+                      <h1 style="text-align: center;">Login</h1>
+                      <div class="form-group">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                      </div>
+                      <div class="form-group">
+                        <input type="password" class="form-control" name="password" id="password"
+                          placeholder="Password">
+                      </div>
+                      <div class="control-group">
+                        <div class="controls">
+                          <button type="submit" class="btn btn-dark">Login</button>
+                        </div>
+                      </div>
+                    </table>
+                  </form>
+                  <p> <a href="/register">Click here for registration</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
   <!--{% if form.errors %}
   <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
@@ -33,4 +55,4 @@
   {% endif %}
 {% endif %}-->
 
-{% endblock %}
+  {% endblock %}

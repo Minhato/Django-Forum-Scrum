@@ -8,6 +8,11 @@ from django.views.generic import DetailView
 from .models import Post
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
+from django.shortcuts import render, redirect
+from user.forms import SignUpForm, PostForm, ProfileForm
+from django.contrib import messages
+from django.views.generic import DetailView
+from .models import Post, Profile
 import time
 
 # Create your views here.
@@ -117,9 +122,8 @@ def edit_thread(request, post_id, user):
 	return redirect('home')
 
 def delete_post(request, post_id, user):
-	field_value = 'user_id'
 	post = Post.objects.get(pk=post_id)
-	postuser = getattr(post, field_value)
+	postuser = getattr(post, 'user_id')
 
 	user_obj = User.objects.get(username=user)
 	current_user = getattr(user_obj, 'id')
@@ -205,3 +209,17 @@ def downvote(request, pk):
 #
 #    context = {'post': post, 'form': form}
 #    return render(request, 'edit_thread.html', context)
+def profile(request):
+	if request.method=="POST":
+		current_user = request.user
+		profile = Profile(user=current_user)
+		form = ProfileForm(data=request.POST, files=request.FILES, instance=profile)
+
+		if form.is_valid():
+			form.save()
+			profile_obj = form.instance
+			messages.success(request, "Your Profile Picture was updated.")
+			return render(request, "profile.html",{'obj': profile_obj})
+	else:
+		form=ProfileForm()	
+	return render(request, 'profile.html', {'form': form})

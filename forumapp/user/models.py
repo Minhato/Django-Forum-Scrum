@@ -13,4 +13,17 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, related_name='forum_post_likes')
     dislikes = models.ManyToManyField(User, related_name='forum_post_dislikes')
     votes = models.IntegerField(default= 0)
+
+    def __str__(self):
+        return self.title
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, primary_key=True, default=1, on_delete=models.CASCADE)    
+    image = models.ImageField(upload_to="images")
+
+class Comment(models.Model):    
+    post = models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE)
+    user = models.CharField(max_length=20)
+    body = models.TextField()
+
 # Create your models here.
