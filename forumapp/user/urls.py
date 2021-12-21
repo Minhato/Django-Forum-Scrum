@@ -20,6 +20,5 @@ urlpatterns = [
     path('like/<int:pk>', upvote, name= 'like_post'),
     path('dislike/<int:pk>', downvote, name= 'dislike_post'),
    
-] 
-#+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 

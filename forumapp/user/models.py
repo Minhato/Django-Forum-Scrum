@@ -13,7 +13,7 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, related_name='forum_post_likes')
     dislikes = models.ManyToManyField(User, related_name='forum_post_dislikes')
     votes = models.IntegerField(default= 0)
-
+    image = models.ImageField(blank = True, null = True, upload_to = 'image/%Y/%m/%D')
     def __str__(self):
         return self.title
 
@@ -26,5 +26,4 @@ class Comment(models.Model):
     user = models.CharField(max_length=20)
     body = models.TextField()
 
-    image = models.ImageField(blank = True, null = True, upload_to = 'image/%Y/%m/%D')
 # Create your models here.

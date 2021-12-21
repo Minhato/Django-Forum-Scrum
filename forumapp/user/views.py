@@ -79,7 +79,7 @@ def create_post(request):
 #Here the logic behind the Create Post is done
 #The Form is saved with the input and the current user
 	context = {}
-	form = PostForm(request.POST or None)
+	form = PostForm(request.POST, request.FILES or None)
 	if request.method == "POST":
 		if form.is_valid():
 			print("\n\n its valid")
