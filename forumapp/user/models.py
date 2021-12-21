@@ -26,4 +26,5 @@ class Comment(models.Model):
     user = models.CharField(max_length=20)
     body = models.TextField()
 
+    image = models.ImageField(blank = True, null = True, upload_to = 'image/%Y/%m/%D')
 # Create your models here.

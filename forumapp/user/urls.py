@@ -1,8 +1,10 @@
+from django.conf import settings
 from django.urls import path, include
 from . import views
 from .views import downvote, upvote, post_detail
 from .views import post_detail, profile
 from django.conf.urls import url
+from django.conf.urls.static import static
 #from mysite.core import views as core_views
 
 urlpatterns = [
@@ -17,5 +19,7 @@ urlpatterns = [
     #path('login', views.login, name='login'),  
     path('like/<int:pk>', upvote, name= 'like_post'),
     path('dislike/<int:pk>', downvote, name= 'dislike_post'),
-]
+   
+] 
+#+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
