@@ -3,14 +3,49 @@
 {% load static %}
 {% block content %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
-<h1 style="text-align:center; margin-block:50px; color:blue;">Hey {{user}}, Write something</h1>
-<!-- This is the Form for the Post-->
-<form method="POST" enctype="multipart/form-data" style="margin-left:150px;">
-    {% csrf_token %}    
-    {{form|crispy}}
+<h1 style="text-align:center; margin-block:40px; color:black;">Hey {{user}}, Write something</h1>
+<form method="post">
+    {% csrf_token %}
+    <body>
+        <div class="container">
+            {{form.as_p}}
+        </div>
+    </body>
+    <center>
+    <!--<input type="submit" value="Add Post"  style="margin-block:50px;">-->
+    <button type="submit", name="Add Post", value="Add Post", class="btn btn-secondary">Post</button>
+    </center>
     
+</form>
+{% endblock content %}   
+
+
+<!--
+This is the Form for the Post
+<form method="post">
+    {% csrf_token %}
+Schleife um alle Forms zu laden 
+    <center style="text-align:center; margin-block:50px">
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
     <input type="submit" value="Save"  style="margin-block:50px;">
+    </center>
 </form>
 
-{% endblock content %}
+-->
+
+
+
+
+
+

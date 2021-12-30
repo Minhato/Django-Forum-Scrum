@@ -20,6 +20,7 @@ urlpatterns = [
     #path('login', views.login, name='login'),  
     path('like/<int:pk>', upvote, name= 'like_post'),
     path('dislike/<int:pk>', downvote, name= 'dislike_post'),
-   
+    path('search_threads', views.search_threads,name='search_threads'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
 

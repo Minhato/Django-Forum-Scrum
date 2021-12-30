@@ -15,6 +15,7 @@ from django.views.generic import DetailView
 from .models import Post, Profile
 import time
 
+
 # Create your views here.
 def home(request):
 	posts = Post.objects.all()
@@ -240,3 +241,13 @@ def create_comment(request, post_id):
 		comment_form = CommentForm()
 
 	return render(request, 'create_comment.html', {'comments': comments})
+def search_threads(request):
+	if 'searched' in request.GET:
+		searched = request.GET['searched']
+		post = Post.objects.filter(title__icontains=searched)
+		print(post) #wird nicht zurückgegeben hier Fehler
+	else:	
+		post = Post.objects.all()
+	
+	context = {'searched' :  searched, 'search' : post}
+	return render(request, 'search_threads.html', context)

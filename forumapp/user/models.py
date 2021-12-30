@@ -32,4 +32,9 @@ class Comment(models.Model):
 
     def __str__(self):
         return 'Comment by %s on %s' % (self.user, self.post.title)
+
+def __str__(self):
+    return self.title
+
+
 # Create your models here.
