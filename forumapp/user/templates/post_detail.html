@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
 
@@ -14,30 +15,56 @@
                         <table>
                             <tr>
                                 <td style="width: 40px;"><i class="bi bi-chat bi-large" style="font-size: 1.75rem;"></i></td>
-                                <td><h3 class="mb-0">Title: {{ posts.title }}</h3></td>
+                                <td><h3 class="mb-0">{{ posts.title }}</h3></td>
                             </tr>   
                         </table>
                     </div>
                     <div class="table-responsive">
-                        <table class="table align-items-center table-flush">
+                        <table class="table align-items-center table-flush table-borderless">
                             <thead class="thead-light">
-                            <!-- Table Headings per Row -->
                                 <tr>
                                     <td style="width: 56px; height:56px; padding-left: 10;"><img src="{{user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>
-                                    <th style="padding-left: 6px">@{{ posts.user }}</th>                                    
+                                    <td style="padding-left: 6px">@{{ posts.user }}</td> <!-- User des Posts hier, nicht User der angemeldet ist-->                              
                                 </tr>
                                 <tr>
-                                    <td colspan="2" style="padding-left: 60px;">{{posts.content}}</td>
-
+                                    <td colspan="3" style="padding-left: 60px;">{{posts.content}}</td>
                                 </tr>
                             
 
                                 <tr>
-                                    <td colspan="2" style="border-color: white; padding-top: 40px; font-size: 10px; text-align: right;">{{posts.date}}</td>
+                                    <td colspan="3" style="padding-top: 40px; font-size: 10px; text-align: right;">{{posts.date}}</td>
+                                </tr><br>
+                                <tr>
+                                    <td colspan="2"  style="font-size: 10px; padding-bottom: 0px;">{{comments.count}} comments</td>
+                                    <td style="padding-top: 2px; padding-bottom: 0px; text-align: right;"> 
+                                        <a href="/create_comment/post.id/user">Add comment</a>
+                                        <button type="submit" class="btn btn-dark" style="
+                                        padding-top: 1px;
+                                        padding-bottom: 1px;
+                                        padding-right: 6px;
+                                        padding-left: 6px;
+                                        width: 78px;
+                                        height: 20px;
+                                        font-size: 10px;" onclick=
+                                        >Add comment
+                                        </button>
+                                    </td>
+                                </tr>                                                               
+                            </thead>
+                        </table>
+                        <table class="table align-items-center table-flush">
+                            <thead  class="thead-light">
+                                {% for comment in comments %}
+                                <tr>                                    
+                                    <td>@{{ comment.user }}</td>
+                                    <td>{{ comment.body }}</td>
+                                    <td style=" font-size: 10px; text-align: right;">{{comment.date | linebreaks }}</td>
                                 </tr>
 
                                 
+                                {% endfor %} 
                             </thead>
+
                         </table>
 
                         {% if posts.image %} 
