@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 import time
 
+
 # Create your views here.
 def home(request):
 	posts = Post.objects.all()
@@ -185,23 +186,13 @@ def downvote(request, pk):
 
 
 
-
-
-
-
-
-
-#def edit_thread2(request, post_id):
-# Function for the Edit of an existing Thread
-#    post = Post.objects.get(id=post_id)	
-#    if request.method != 'POST':
-#        form = PostForm(instance=post)
-#
-#    else:
-#        form = PostForm(instance=post, data=request.POST) 
-#        if form.is_valid():
-#            form.save()
-#            return redirect('base.html')
-#
-#    context = {'post': post, 'form': form}
-#    return render(request, 'edit_thread.html', context)
+def search_threads(request):
+	if 'searched' in request.GET:
+		searched = request.GET['searched']
+		post = Post.objects.filter(title__icontains=searched)
+		print(post) #wird nicht zurückgegeben hier Fehler
+	else:	
+		post = Post.objects.all()
+	
+	context = {'searched' :  searched, 'search' : post}
+	return render(request, 'search_threads.html', context)

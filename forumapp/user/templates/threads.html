@@ -14,7 +14,27 @@
           <div class="card shadow">
             <div class="card-header border-0">
               <!-- Table Header -->
-              <h3 class="mb-0">Posts</h3>
+              <h3 class="mb-0" style="float:left">Posts</h3>
+              <ul>
+              <form class="searchfield" style="float:right" action={% url 'search_threads' %} method="GET">
+                  <div>
+                    <input type="text"   value="{{request.GET.searched}}" name="searched" id="search_threads" placeholder="Search.."> 
+                    <button id="search-button" class="btn btn-secondary" type="submit">Search</button>
+                  </div>
+              </form>  
+              </ul>
+            
+                <!-- Searchfield
+                <form class="searchfield" method = POST action= "{% url 'search_threads' %}">
+
+                {% csrf_token%}
+
+                <input class="form-control me-2"
+                type="search" placeholder="Search Threads" aria-label="Search" name="searched">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+              </form>
+              -->
+            
             </div>
             <div class="table-responsive">
               <table class="table align-items-center table-flush">
@@ -65,5 +85,6 @@
     </div>
   </div>
   {%endif%}
+
 </body>
 {% endblock %}
