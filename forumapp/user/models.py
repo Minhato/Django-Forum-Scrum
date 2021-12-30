@@ -11,15 +11,21 @@ class Post(models.Model):
     approved = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.title
+        return '%s | posted by  %s' % (self.title, self.user)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True, default=1, on_delete=models.CASCADE)    
     image = models.ImageField(upload_to="images")
 
+    def __str__(self):
+        return '%s' % (self.user)
+
 class Comment(models.Model):    
     post = models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE)
     user = models.CharField(max_length=20)
     body = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return 'Comment by %s on %s' % (self.user, self.post.title)
 # Create your models here.

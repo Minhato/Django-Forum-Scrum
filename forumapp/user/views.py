@@ -2,7 +2,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from user.forms import SignUpForm, PostForm, ProfileForm
+from user.forms import SignUpForm, PostForm, ProfileForm, CommentForm
 from django.contrib import messages
 from django.views.generic import DetailView
 from .models import Post, Profile
@@ -69,9 +69,10 @@ def create_post(request):
 	return render(request, "create_post.html", context)
 
 def post_detail(request, pk):
-	posts = Post.objects.get(pk=pk)
-	#template_name = 'post_detail.html'
-	return render(request, 'post_detail.html', {'posts': posts})
+	posts = Post.objects.get(pk=pk)	
+	comments = posts.comments.filter(post_id=pk)
+	
+	return render(request, 'post_detail.html', {'posts': posts, 'comments': comments})
 
 def delete_post(request, post_id, user):
 	post = Post.objects.get(pk=post_id)
@@ -101,3 +102,19 @@ def profile(request):
 	else:
 		form=ProfileForm()	
 	return render(request, 'profile.html', {'form': form})
+	
+def create_comment(request, post_id):
+	
+	posts = Post.objects.get(pk=post_id)	
+	comments = posts.comments.filter(post_id=post_id)
+
+	if request.method=="POST":
+		comment_form = CommentForm(data=request.POST)
+		if comment_form.is_valid():
+			new_comment = comment_form.save(commit=False)
+			new_comment.post = posts
+			new_comment.save()
+	else:
+		comment_form = CommentForm()
+
+	return render(request, 'create_comment.html', {'comments': comments})
