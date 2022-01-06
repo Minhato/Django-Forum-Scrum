@@ -26,9 +26,13 @@
                                         <form action="/profile" enctype="multipart/form-data" method="POST">{% csrf_token %} 
                                             {{ form.as_p }}
                                             <button type="submit">Upload</button>
-                                            Profile Photo: <strong class="float-right"> <img
-                                                    src="{{user.profile.image.url}}"class="rounded-circle" alt=""
-                                                    width="150px" height="150px"></strong>
+                                            {% if user.profile.image %}
+                                            <p>Profile Photo: <strong class="float-right"> <img src="{{user.profile.image.url}}"class="rounded-circle" alt=""
+                                                width="150px" height="150px"></strong>></p>
+                                            {% else %}
+                                            <p></p>
+                                            {% endif %}
+
                                     </li>
                                 </ul>
                             </div>
