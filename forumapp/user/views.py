@@ -2,24 +2,19 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
-from user.forms import SignUpForm, PostForm
+from user.forms import SignUpForm
 from django.contrib import messages
 from django.views.generic import DetailView
-from .models import Post
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect
-from user.forms import SignUpForm, PostForm, ProfileForm, CommentForm
+from user.forms import SignUpForm, ProfileForm
 from django.contrib import messages
 from django.views.generic import DetailView
-from .models import Post, Profile
+from .models import Profile
 import time
 
 
-# Create your views here.
-def home(request):
-	posts = Post.objects.all()
-	return render(request, 'threads.html', {'posts': posts})
 
 #def threads(request):
  #   return render(request, 'threads.html')
@@ -75,4 +70,19 @@ def login(request):
 	nachricht()				
 	return render(request=request, template_name="login.html", context={"login_form":form})
 
+def profile(request):
+	if request.method=="POST":
+		current_user = request.user
+		profile = Profile(user=current_user)
+		form = ProfileForm(data=request.POST, files=request.FILES, instance=profile)
+
+		if form.is_valid():
+			form.save()
+			profile_obj = form.instance
+			messages.success(request, "Your Profile Picture was updated.")
+			return render(request, "profile.html",{'obj': profile_obj})
+	else:
+		form=ProfileForm()	
+	return render(request, 'profile.html', {'form': form})
+	
 
