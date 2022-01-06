@@ -23,6 +23,9 @@
                                         Email: <strong class="float-right">{{user.email}}</strong>
                                     </li>
                                     <li class="list-group-item">
+                                        Department: <strong class="float-right">{{user.profile.department}}</strong>
+                                    </li>
+                                    <li class="list-group-item">
                                         <form action="/profile" enctype="multipart/form-data" method="POST">{% csrf_token %} 
                                             {{ form.as_p }}
                                             <button type="submit">Upload</button>
