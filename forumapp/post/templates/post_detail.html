@@ -23,117 +23,65 @@
                         <table class="table align-items-center table-flush table-borderless">
                             <thead class="thead-light">
                                 <tr>
-                                    <td style="width: 56px; height:56px; padding-left: 10;"><img src="{{posts.user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>
+                                    <td style="width: 56px; height:56px; padding-left: 10;"><img src="{{user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>
                                     <td style="padding-left: 6px">@{{ posts.user }}</td> <!-- User des Posts hier, nicht User der angemeldet ist-->                              
                                 </tr>
                                 <tr>
-                                    <td colspan="4" style="padding-left: 60px;">{{posts.content}}</td>
+                                    <td colspan="3" style="padding-left: 60px;">{{posts.content}}</td>
                                 </tr>
-
-                                {% if posts.image %}
-                                <tr>
-                                <td colspan="4" style="padding-left: 60px;"><img src="{{posts.image.url}}" width="300" height="200"></td> 
-                                </tr>
-                                {% endif %}
+                            
 
                                 <tr>
-                                    <td colspan="4" style="padding-top: 40px; font-size: 10px; text-align: right;">posted on: {{posts.date |date:'m/d/y'}}</td>
+                                    <td colspan="3" style="padding-top: 40px; font-size: 10px; text-align: right;">{{posts.date}}</td>
                                 </tr><br>
                                 <tr>
-                                    <td colspan="2">
-                                        <form action="{% url 'like_post' posts.pk %}" method="POST" style="display: inline;">
-                                            {% csrf_token %}
-                                        <button type="submit", name="post_id", value="{{posts.id}}", class="btn btn-secondary btn-sm">  &#128077</button>
-                                        </form>
-                                        <span class="badge badge-pill badge-secondary">{{ posts.votes }}</span>                              
-                                        <form action="{% url 'dislike_post' posts.pk %}" method="POST" style="display: inline;">
-                                            {% csrf_token %}
-                                        <button type="submit", name="post_id2", value="{{posts.id}}", class="btn btn-secondary btn-sm">  &#128078 </button>
-                                        </form>
+                                    <td colspan="2"  style="font-size: 10px; padding-bottom: 0px;">{{comments.count}} comments</td>
+                                    <td style="padding-top: 2px; padding-bottom: 0px; text-align: right;"> 
+                                        <a href="/create_comment/post.id/user">Add comment</a>
+                                        <button type="submit" class="btn btn-dark" style="
+                                        padding-top: 1px;
+                                        padding-bottom: 1px;
+                                        padding-right: 6px;
+                                        padding-left: 6px;
+                                        width: 78px;
+                                        height: 20px;
+                                        font-size: 10px;" onclick=
+                                        >Add comment
+                                        </button>
                                     </td>
-                                    <td>
-                                        <form action="/create_comment" method="post">
-                                            {% csrf_token %}
-                                            <input type="text" name="comment_content" placeholder="Enter comment here">
-                                            <input type="hidden" name="post_id" value="{{posts.id}}" >
-                                            <input type="submit" value="Submit">
-                                        </form> 
-                                    </td>
-                                    <td colspan="2" style="text-align: right;">
-                                        <p style="width: 110px; margin-bottom: 0px; display: inline;">Comments:</p><span class="badge badge-dark ml-2">{{ comments.count }}</span>
-                                    </td>
-                                </tr>                                                                                         
+                                </tr>                                                               
                             </thead>
                         </table>
-                        <table id='commentsection' class="table align-items-center table-flush">
+                        <table class="table align-items-center table-flush">
+                            <thead  class="thead-light">
                                 {% for comment in comments %}
-                                <tr>
-                                    <td style="width: 56px; height:56px; padding-left: 10;"><img src="{{comment.user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>                             
-                                    <td>by @{{ comment.user }}</td>
-                                    <td>{{ comment.comment_content }}</td>
-                                    <td style=" font-size: 10px; text-align: right;">replied to on: {{comment.date | date:'m/d/y'}}    </td>
-                                    <td>
-                                        {% if request.user == comment.user or request.user.is_superuser %}
-                                        <a href="{% url 'delete-comment' comment.id %}" class="badge badge-danger">Delete</a>
-                                        {% endif %}
-                                        <a href="" class="badge badge-secondary" data-toggle="collapse" data-target="#replyBox{{comment.id}}" aria-expanded="false" aria-controls="replyBox{{comment.id}}">Reply</a>
-                                        <!--<button  type="button" class="btn btn-danger">Danger</button>  --> 
-                                        <form action="{% url 'like_post' posts.pk %}" method="POST" style="display: inline;">
-                                            {% csrf_token %}
-                                        <button type="submit", name="post_id", value="{{posts.id}}", class="btn btn-secondary btn-sm">  &#128077</button>
-                                        </form>
-                                        <span class="badge badge-pill badge-secondary">{{ posts.votes }}</span>                              
-                                        <form action="{% url 'dislike_post' posts.pk %}" method="POST" style="display: inline;">
-                                            {% csrf_token %}
-                                        <button type="submit", name="post_id2", value="{{posts.id}}", class="btn btn-secondary btn-sm">  &#128078 </button>
-                                        </form>
-                                        <div class="collapse" id="replyBox{{comment.id}}">
-                                                <form action="/create_comment" method="post">
-                                                    {% csrf_token %}
-                                                    <div class="form-group" style="margin-top: 5px; margin-bottom: 5px;">
-                                                        <input type="text" class="form-control" name="reply_content" placeholder="Enter reply here">
-                                                        <input type="hidden" name="parent_id" value="{{comment.id}}">
-                                                    </div>
-                                                    <input type="hidden" name="post_id" value="{{posts.id}}">
-                                                    <button type="submit" class="btn btn-secondary btn-sm">Reply</button>
-                                                </form>                                                
-                                        </div>                                                                          
-                                    </td>
+                                <tr>                                    
+                                    <td>@{{ comment.user }}</td>
+                                    <td>{{ comment.body }}</td>
+                                    <td style=" font-size: 10px; text-align: right;">{{comment.date | linebreaks }}</td>
                                 </tr>
-                                {% for reply in comment.replies.all %}
-                                <tr id='replycontent'>
-                                    <td></td>
-                                    <td style="width: 116px; height:56px; padding-left: 10;"><img src="{{reply.user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>                             
-                                    <td>by @{{ reply.user }}</td>
-                                    <td>{{ reply.comment_content }}</td>
-                                    <td style=" font-size: 10px; text-align: right;">
-                                        replied to on: {{reply.date | date:'m/d/y'}}
-                                        {% if request.user == reply.user or request.user.is_superuser %}
-                                        <a href="{% url 'delete-comment' reply.id %}" class="badge badge-danger">Delete</a>
-                                        {% endif %}
-                                    </td>
-                                    
-                                </tr>
-                                {% endfor %}                                
+
                                 
-                                {% empty %}
-                                    <h4 style="margin-bottom: 0px; text-align: center;">There are no comments yet.</h4>                                                                
                                 {% endfor %} 
-                                
+                            </thead>
 
                         </table>
-                            {% for reply in replies %}
-                                <tr>
-                                    <div>
 
-                                    </div>
-                                    <td></td>
-                                    <td style="width: 56px; height:56px; padding-left: 10;"><img src="{{comment.user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>                             
-                                    <td>by @{{ reply.user }}</td>
-                                    <td>{{ reply.reply_content }}</td>
-                                    <td style=" font-size: 10px; text-align: right;">replied to on: {{reply.date | date:'m/d/y'}}    </td>
-                                </tr>                                                                
-                            {% endfor %}  
+                        {% if posts.image %} 
+                        <img src="{{ posts.image.url}}" width="300" height="200"> 
+                         {% endif %}
+                        
+                        <tr>
+                            <form action="{% url 'like_post' posts.pk %}" method="POST">
+                                {% csrf_token %}
+                            <button type="submit", name="post_id", value="{{posts.id}}", class="btn btn-primary btn-sm">  &#128077</button>
+                            </form>
+                            Like/Dislike: {{ posts.votes }}
+                            <form action="{% url 'dislike_post' posts.pk %}" method="POST">
+                                {% csrf_token %}
+                            <button type="submit", name="post_id2", value="{{posts.id}}", class="btn btn-primary btn-sm">  &#128078 </button>
+                            </form>
+                        </tr>
                     </div>                
                 </div>
 

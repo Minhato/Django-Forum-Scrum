@@ -2,13 +2,14 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
-from user.forms import SignUpForm
+#from user.forms import SignUpForm
 from django.contrib import messages
 from django.views.generic import DetailView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect
-from user.forms import SignUpForm, ProfileForm
+#from forumapp.user.forms import SignUpForm
+from user.forms import ProfileForm, SignUpForm
 from django.contrib import messages
 from django.views.generic import DetailView
 from .models import Profile
@@ -24,7 +25,13 @@ def signup(request):
 		#ruft die Methode SignupForm auf die wir geschrieben haben in forms.py 
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            user.refresh_from_db()
+            user.profile.first_name = form.cleaned_data['first_name']
+            user.profile.last_name = form.cleaned_data['last_name']
+            user.profile.email = form.cleaned_data['email']
+            user.profile.department = form.cleaned_data['department']
+            user.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
 			#nutzt das authenticationForm von django 
@@ -77,12 +84,10 @@ def profile(request):
 		form = ProfileForm(data=request.POST, files=request.FILES, instance=profile)
 
 		if form.is_valid():
-			form.save()
-			profile_obj = form.instance
+			#form.save()
+			profile_obj = profile.save(update_fields=['image'])
 			messages.success(request, "Your Profile Picture was updated.")
 			return render(request, "profile.html",{'obj': profile_obj})
 	else:
 		form=ProfileForm()	
 	return render(request, 'profile.html', {'form': form})
-	
-

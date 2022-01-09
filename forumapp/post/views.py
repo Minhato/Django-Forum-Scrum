@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.generic import DetailView
 from .models import Post, Comment
+from .models import Post
 from user.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
@@ -21,92 +22,44 @@ def home(request):
 	posts = Post.objects.all()
 	return render(request, 'threads.html', {'posts': posts})
 
+
 def create_post(request):
 #Here the logic behind the Create Post is done
 #The Form is saved with the input and the current user
-	context = {}
-	form = PostForm(request.POST or None)
+    context = {}
+    form = PostForm(request.POST or None)
+    new_post = form.save(commit=False)
+    cleaned_content = check_and_censor(new_post.content)
 
+    if cleaned_content == True:
+        print('in der if')
+        return redirect('home')
 
-	# Hier PrÃ¼fung nach dem Inhalt, falls zu verletzend wird auf hauptseite redirected
-	new_post = form.save(commit=False)
+    print("weiter")
+    if request.method == "POST":
+        if form.is_valid():
+            form = PostForm(request.POST, request.FILES or None)
+            print("\n\n its valid")
+            new_post = form.save(commit=False)
+            new_post.content = cleaned_content
+            new_post.user = request.user
 
-
-
-	#if new_post.content == str.empty:
-	#	print("kein inhalt")
-	#	return redirect('home')
-		
-
-
-	cleaned_content = check_and_censor(new_post.content)
-
-	
-	if cleaned_content == True:
-		print('in der if')
-		return redirect('home')
-	
-
-	print("weiter")
-	if request.method == "POST":
-		
-
-
-		if form.is_valid():
-
-			print("\n\n its valid")
-			#new_post = form.save(commit=False)
-			print(new_post.content)
-
-
-			
-			#cleaned_content = check_and_censor(new_post.content)
-			
-			
-
-
-			new_post.content = cleaned_content
-			new_post.user = request.user
-			new_post.save()
-			form.save_m2m()
-			return redirect('home')
-		
-	context.update({
-    	"form": form,
+            new_post.save()
+            form.save()
+            return redirect('home')
+    context.update({
+        "form": form,
     })
+    return render(request, "create_post.html", context)
 
-
-	print("return ende")
-	return render(request, "create_post.html", context)
 
 def post_detail(request, pk):
 	posts = Post.objects.get(pk=pk)	
-	comments = posts.comments.filter(post_id=pk, parent=None)
+	comments = posts.comments.filter(post_id=pk)
 	
 	return render(request, 'post_detail.html', {'posts': posts, 'comments': comments})
 
-def edit_thread(request, post_id, user):
-	field_value = 'user_id'
-	post = Post.objects.get(pk=post_id)
-	postuser = getattr(post, field_value)
 
-	user_obj = User.objects.get(username=user)
-	current_user = getattr(user_obj, 'id')
-
-	if postuser == current_user:
-		if request.method != 'POST':
-			form=PostForm(instance=post)
-		
-		else:
-			form = PostForm(instance=post, data=request.POST)
-			if form.is_valid():
-				form.save()
-				return redirect('home')
-		context = {'post': post, 'form': form}
-		return render(request, 'edit_thread.html', context)
-	else:
-		messages.warning(request, "This Post was published by another user. You can only modify/delete your own!")
-	return redirect('home')
 
 def delete_post(request, post_id, user):
 	post = Post.objects.get(pk=post_id)
@@ -228,3 +181,26 @@ def delete_comment(request, comment_id):
     else:
         messages.warning(request, "This Comment was published by another user. You can only delete your own!")
     return redirect('post-detail', post_id)
+
+
+
+def edit_thread(request, post_id, user):
+	field_value = 'user_id'
+	post = Post.objects.get(pk=post_id)
+	postuser = getattr(post, field_value)
+	user_obj = User.objects.get(username=user)
+	current_user = getattr(user_obj, 'id')
+	if postuser == current_user:
+		if request.method != 'POST':
+			form=PostForm(instance=post)
+		
+		else:
+			form = PostForm(request.POST, request.FILES, instance=post)
+			if form.is_valid():
+				form.save()
+				return redirect('home')
+		context = {'post': post, 'form': form}
+		return render(request, 'edit_thread.html', context)
+	else:
+		messages.warning(request, "This Post was published by another user. You can only modify/delete your own!")
+	return redirect('home')
