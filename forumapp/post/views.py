@@ -21,36 +21,36 @@ def home(request):
 	posts = Post.objects.all()
 	return render(request, 'threads.html', {'posts': posts})
 
+
 def create_post(request):
 #Here the logic behind the Create Post is done
 #The Form is saved with the input and the current user
-	context = {}
-	form = PostForm(request.POST or None)
-	# Hier PrÃ¼fung nach dem Inhalt, falls zu verletzend wird auf hauptseite redirected
-	new_post = form.save(commit=False)
-	cleaned_content = check_and_censor(new_post.content)
-	if cleaned_content == True:
-		print('in der if')
-		return redirect('home')
-	print("weiter")
-	if request.method == "POST":
-		if form.is_valid():
-			print("\n\n its valid")
-			#new_post = form.save(commit=False)
-			print(new_post.content)
-			new_post.content = cleaned_content
-			new_post.user = request.user
-			new_post.save()
-			form.save()
-			return redirect('home')
-		
-	context.update({
-    	"form": form,
+    context = {}
+    form = PostForm(request.POST or None)
+    new_post = form.save(commit=False)
+    cleaned_content = check_and_censor(new_post.content)
+
+    if cleaned_content == True:
+        print('in der if')
+        return redirect('home')
+
+    print("weiter")
+    if request.method == "POST":
+        if form.is_valid():
+            form = PostForm(request.POST, request.FILES or None)
+            print("\n\n its valid")
+            new_post = form.save(commit=False)
+            new_post.content = cleaned_content
+            new_post.user = request.user
+
+            new_post.save()
+            form.save()
+            return redirect('home')
+    context.update({
+        "form": form,
     })
+    return render(request, "create_post.html", context)
 
-
-	print("return ende")
-	return render(request, "create_post.html", context)
 
 def post_detail(request, pk):
 	posts = Post.objects.get(pk=pk)	
