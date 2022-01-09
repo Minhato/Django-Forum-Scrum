@@ -26,45 +26,18 @@ def create_post(request):
 #The Form is saved with the input and the current user
 	context = {}
 	form = PostForm(request.POST or None)
-
-
 	# Hier PrÃ¼fung nach dem Inhalt, falls zu verletzend wird auf hauptseite redirected
 	new_post = form.save(commit=False)
-
-
-
-	#if new_post.content == str.empty:
-	#	print("kein inhalt")
-	#	return redirect('home')
-		
-
-
 	cleaned_content = check_and_censor(new_post.content)
-
-	
 	if cleaned_content == True:
 		print('in der if')
 		return redirect('home')
-	
-
 	print("weiter")
 	if request.method == "POST":
-		
-
-
 		if form.is_valid():
-
 			print("\n\n its valid")
 			#new_post = form.save(commit=False)
 			print(new_post.content)
-
-
-			
-			#cleaned_content = check_and_censor(new_post.content)
-			
-			
-
-
 			new_post.content = cleaned_content
 			new_post.user = request.user
 			new_post.save()
