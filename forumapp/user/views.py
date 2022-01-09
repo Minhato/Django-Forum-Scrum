@@ -85,7 +85,7 @@ def profile(request):
 		form = ProfileForm(data=request.POST, files=request.FILES, instance=profile)
 
 		if form.is_valid():
-			form.save()
+			#form.save()
 			profile_obj = profile.save(update_fields=['image'])
 			messages.success(request, "Your Profile Picture was updated.")
 			return render(request, "threads.html",{'obj': profile_obj})

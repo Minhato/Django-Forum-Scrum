@@ -89,10 +89,8 @@ def edit_thread(request, post_id, user):
 	field_value = 'user_id'
 	post = Post.objects.get(pk=post_id)
 	postuser = getattr(post, field_value)
-
 	user_obj = User.objects.get(username=user)
 	current_user = getattr(user_obj, 'id')
-
 	if postuser == current_user:
 		if request.method != 'POST':
 			form=PostForm(instance=post)

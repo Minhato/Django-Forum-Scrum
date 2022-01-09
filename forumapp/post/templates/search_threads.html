@@ -1,5 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
 <body>
     <!-- Only show the Posts if the User is logged in-->
     {% if user.is_authenticated%}

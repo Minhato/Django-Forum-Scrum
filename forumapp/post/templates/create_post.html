@@ -1,24 +1,22 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
 
-<h1 style="text-align:center; margin-block:50px; color:blue;">Hey MD, Write something</h1>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+<center>
+<h1 style="text-align:center; margin-block:50px; color:white;">Hey MD, Write something</h1>
+</center>
 <!-- This is the Form for the Post-->
-<form method="POST" enctype="multipart/form-data" style="margin-left:150px;">
+<form method="POST" enctype="multipart/form-data" style="width: 600px; margin-left: 700px; color:white;">
     <input type="hidden" name="csrfmiddlewaretoken" value="nYapeT1XWYeCZjCjMHzqxpbn6wP4hkIjHOVQL8ykF5goTR4JewRCH658E9z9JH3i">    
     <div id="div_id_title" class="ctrlHolder error">            
-                <p id="error_1_id_title" class="errorField">
-                    This field is required.
-                </p>
             <label for="id_title" class="requiredField">
                 Title<span class="asteriskField">*</span>
             </label>
             <input type="text" name="title" class="form-control textinput textInput" maxlength="20" required id="id_title">    
     </div>
     <div id="div_id_content" class="ctrlHolder error">            
-                <p id="error_1_id_content" class="errorField">
-                    This field is required.
-                </p>
             <label for="id_content" class="requiredField">
                 Content<span class="asteriskField">*</span>
             </label>        
@@ -28,12 +26,13 @@
     <div id="div_id_image" class="ctrlHolder">
             <label for="id_image" >
                 Image
-            </label>       
-            <input type="file" name="image" accept="image/*" class="clearablefileinput" id="id_image">        
+            </label>
+            <p>   
+            <input type="file" name="image" accept="image/*" class="clearablefileinput" id="id_image">   
+            </p>    
     </div>   
     <input type="submit" value="Save"  style="margin-block:50px;">
 </form>
-
 {% endblock content %}
 
 <!--
