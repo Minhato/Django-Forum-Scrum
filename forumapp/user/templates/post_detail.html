@@ -78,6 +78,15 @@
                                         {% endif %}
                                         <a href="" class="badge badge-secondary" data-toggle="collapse" data-target="#replyBox{{comment.id}}" aria-expanded="false" aria-controls="replyBox{{comment.id}}">Reply</a>
                                         <!--<button  type="button" class="btn btn-danger">Danger</button>  --> 
+                                        <form action="{% url 'like_post' posts.pk %}" method="POST" style="display: inline;">
+                                            {% csrf_token %}
+                                        <button type="submit", name="post_id", value="{{posts.id}}", class="btn btn-secondary btn-sm">  &#128077</button>
+                                        </form>
+                                        <span class="badge badge-pill badge-secondary">{{ posts.votes }}</span>                              
+                                        <form action="{% url 'dislike_post' posts.pk %}" method="POST" style="display: inline;">
+                                            {% csrf_token %}
+                                        <button type="submit", name="post_id2", value="{{posts.id}}", class="btn btn-secondary btn-sm">  &#128078 </button>
+                                        </form>
                                         <div class="collapse" id="replyBox{{comment.id}}">
                                                 <form action="/create_comment" method="post">
                                                     {% csrf_token %}
@@ -87,7 +96,7 @@
                                                     </div>
                                                     <input type="hidden" name="post_id" value="{{posts.id}}">
                                                     <button type="submit" class="btn btn-secondary btn-sm">Reply</button>
-                                                </form>
+                                                </form>                                                
                                         </div>                                                                          
                                     </td>
                                 </tr>
