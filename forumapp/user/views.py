@@ -6,13 +6,13 @@ from user.forms import SignUpForm, PostForm
 from django.contrib import messages
 from django.views.generic import DetailView
 from .models import Post
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, request
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect
 from user.forms import SignUpForm, PostForm, ProfileForm, CommentForm
 from django.contrib import messages
 from django.views.generic import DetailView
-from .models import Post, Profile
+from .models import Post, Profile, Comment
 import time
 
 
@@ -96,8 +96,9 @@ def create_post(request):
 
 def post_detail(request, pk):
 	posts = Post.objects.get(pk=pk)	
-	comments = posts.comments.filter(post_id=pk)
-	
+	comments = posts.comments.filter(post_id=pk, parent=None)
+
+
 	return render(request, 'post_detail.html', {'posts': posts, 'comments': comments})
 
 def edit_thread(request, post_id, user):
@@ -130,7 +131,7 @@ def delete_post(request, post_id, user):
 	user_obj = User.objects.get(username=user)
 	current_user = getattr(user_obj, 'id')
 
-	if postuser == current_user:
+	if postuser == current_user or request.user.is_superuser:
 		messages.success(request, "Your Post was successfully deleted")
 		post.delete()
 	else:
@@ -190,27 +191,6 @@ def downvote(request, pk):
 	return redirect('post-detail', post.pk)
 
 
-
-
-
-
-
-
-
-#def edit_thread2(request, post_id):
-# Function for the Edit of an existing Thread
-#    post = Post.objects.get(id=post_id)	
-#    if request.method != 'POST':
-#        form = PostForm(instance=post)
-#
-#    else:
-#        form = PostForm(instance=post, data=request.POST) 
-#        if form.is_valid():
-#            form.save()
-#            return redirect('base.html')
-#
-#    context = {'post': post, 'form': form}
-#    return render(request, 'edit_thread.html', context)
 def profile(request):
 	if request.method=="POST":
 		current_user = request.user
@@ -226,21 +206,49 @@ def profile(request):
 		form=ProfileForm()	
 	return render(request, 'profile.html', {'form': form})
 	
-def create_comment(request, post_id):
+def create_comment(request):
 	
-	posts = Post.objects.get(pk=post_id)	
-	comments = posts.comments.filter(post_id=post_id)
-
 	if request.method=="POST":
-		comment_form = CommentForm(data=request.POST)
-		if comment_form.is_valid():
-			new_comment = comment_form.save(commit=False)
-			new_comment.post = posts
-			new_comment.save()
-	else:
-		comment_form = CommentForm()
+		post_id = request.POST.get('post_id')
+		post = Post.objects.get(pk=post_id)
+		user = request.user	
+		comment = request.POST.get('comment_content')
+		reply = request.POST.get('reply_content')
+		parent_id = request.POST.get("parent_id")
 
-	return render(request, 'create_comment.html', {'comments': comments})
+		if parent_id == None:
+			comment_form = Comment(post=post, user=user, comment_content=comment)
+			comment_form.save()
+			messages.success(request, "Your comment has been posted successfully")
+		else:
+			comment_form = Comment(post=post, user=user,  comment_content = reply, parent_id =parent_id)
+			comment_form.save()
+			messages.success(request, "Your reply has been posted successfully")
+	else:
+		comment_form = Comment()
+		messages.success(request, "Your comment couldn't be posted")
+
+	return redirect(f'post/{post_id}')
+
+
+def delete_comment(request, comment_id):
+	comment = Comment.objects.get(pk=comment_id)
+	commentuser_id = getattr(comment, 'user_id')
+	
+	post_id = getattr(comment, 'post_id')
+
+	user_obj = User.objects.get(pk=commentuser_id)
+	commentuser = getattr(user_obj, 'username')
+
+	current_user = request.user
+	
+	if 	str(commentuser) == str(current_user) or request.user.is_superuser:
+		messages.success(request, "Your Comment was successfully deleted")
+		comment.delete()
+	else:
+		messages.warning(request, "This Comment was published by another user. You can only delete your own!")
+	return redirect('post-detail', post_id)
+
 def search_threads(request):
 	if 'searched' in request.GET:
 		searched = request.GET['searched']

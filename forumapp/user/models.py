@@ -8,12 +8,15 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = HTMLField()
     date = models.DateTimeField(auto_now_add=True)
-    date = models.DateTimeField(auto_now=True)
     approved = models.BooleanField(default=False)
     likes = models.ManyToManyField(User, related_name='forum_post_likes')
     dislikes = models.ManyToManyField(User, related_name='forum_post_dislikes')
     votes = models.IntegerField(default= 0)
     image = models.ImageField(blank = True, null = True, upload_to = 'image/%Y/%m/%D')
+
+    class Meta:
+        ordering = ('-date',)
+
     def __str__(self):
         return '%s | posted by  %s' % (self.title, self.user)
 
@@ -26,15 +29,26 @@ class Profile(models.Model):
 
 class Comment(models.Model):    
     post = models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE)
-    user = models.CharField(max_length=20)
-    body = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment_content = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='replies')
+
+    class Meta:
+        ordering = ('-date',)
 
     def __str__(self):
-        return 'Comment by %s on %s' % (self.user, self.post.title)
+        return '%s by %s on %s' % (self.comment_content, self.user, self.post.title)
 
-def __str__(self):
-    return self.title
+#class Reply(models.Model):
+#    user = models.ForeignKey(User, on_delete=models.CASCADE)
+#    reply_content = models.TextField()
+#    date = models.DateTimeField(auto_now_add=True)
+#    comment = models.ForeignKey(Comment, related_name="replies", on_delete=models.CASCADE)
 
+ #   class Meta:
+ #       ordering = ('-date',)
 
-# Create your models here.
+ #   def __str__(self):
+  #      return '%s by %s on Comment: %s' % (self.reply_content, self.user, self.comment.comment_content)
+

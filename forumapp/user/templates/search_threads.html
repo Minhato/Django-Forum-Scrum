@@ -1,12 +1,14 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
 <body>
     <!-- Only show the Posts if the User is logged in-->
     {% if user.is_authenticated%}
     <div class="main-content">
       <div class="container mt-7">
         <!-- Here Heading -->
-        <h2 class="mb-5">Hello {{user}}, you searched for {{searched}}</h2>
+        <h2 class="mb-5">Posts with "{{searched}}" in title</h2>
         <!-- Here the Table begins -->
         <div class="row">
           <div class="col">
@@ -17,7 +19,7 @@
                 <ul>
                 <form class="searchfield" style="float:right" action={% url 'search_threads' %} method="GET">
                     <div>
-                      <input type="text"   value="{{request.GET.searched}}" name="searched" id="search_threads" placeholder="Search.."> 
+                      <input type="text"   value="{{request.GET.searched}}" name="searched" id="search_threads" placeholder="Search in title..."> 
                       <button id="search-button" class="btn btn-secondary" type="submit">Search</button>
                     </div>
                 </form>  

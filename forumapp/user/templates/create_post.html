@@ -2,8 +2,9 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
 
-<h1 style="text-align:center; margin-block:40px; color:black;">Hey {{user}}, Write something</h1>
+<h1 style="text-align:center; margin-block:40px; color: white;">Hey {{user}}, write something</h1>
 <form method="post">
     {% csrf_token %}
     <body>

@@ -20,7 +20,7 @@
               <ul>
               <form class="searchfield" style="float:right" action={% url 'search_threads' %} method="GET">
                   <div>
-                    <input type="text"   value="{{request.GET.searched}}" name="searched" id="search_threads" placeholder="Search.."> 
+                    <input type="text"   value="{{request.GET.searched}}" name="searched" id="search_threads" placeholder="Search in title..."> 
                     <button id="search-button" class="btn btn-secondary" type="submit">Search</button>
                   </div>
               </form>  
@@ -69,10 +69,12 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                           <a class="dropdown-item" href="{% url 'post-detail' post.pk %}">View Post</a>
+                          {% if request.user == post.user or request.user.is_superuser %}
                           <a class="dropdown-item" href="{% url 'delete-post' post.id user %}">Delete Post</a>
+                          {%endif%}
+                          {% if request.user == post.user %}
                           <a class="dropdown-item" href="{% url 'edit_thread' post.id user %}">Edit Thread</a>
-                          <a class="dropdown-item" href="#">Another action</a>
-                          <a class="dropdown-item" href="#">Something else here</a>
+                          {%endif%}
                         </div>
                       </div>
                     </td>
