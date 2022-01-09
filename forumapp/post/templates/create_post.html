@@ -3,21 +3,37 @@
 {% load static %}
 {% block content %}
 
-<h1 style="text-align:center; margin-block:40px; color:black;">Hey {{user}}, Write something</h1>
-<form method="post">
-    {% csrf_token %}
-    <body>
-        <div class="container">
-            {{form.as_p}}
-        </div>
-    </body>
-    <center>
-    <!--<input type="submit" value="Add Post"  style="margin-block:50px;">-->
-    <button type="submit", name="Add Post", value="Add Post", class="btn btn-secondary">Post</button>
-    </center>
-    
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+<center>
+<h1 style="text-align:center; margin-block:50px; color:white;">Hey MD, Write something</h1>
+</center>
+<!-- This is the Form for the Post-->
+<form method="POST" enctype="multipart/form-data" style="width: 600px; margin-left: 700px; color:white;">
+    <input type="hidden" name="csrfmiddlewaretoken" value="nYapeT1XWYeCZjCjMHzqxpbn6wP4hkIjHOVQL8ykF5goTR4JewRCH658E9z9JH3i">    
+    <div id="div_id_title" class="ctrlHolder error">            
+            <label for="id_title" class="requiredField">
+                Title<span class="asteriskField">*</span>
+            </label>
+            <input type="text" name="title" class="form-control textinput textInput" maxlength="20" required id="id_title">    
+    </div>
+    <div id="div_id_content" class="ctrlHolder error">            
+            <label for="id_content" class="requiredField">
+                Content<span class="asteriskField">*</span>
+            </label>        
+            <textarea name="content" cols="40" rows="10" col="50" class="form-control textarea" required id="id_content">
+</textarea>        
+    </div>
+    <div id="div_id_image" class="ctrlHolder">
+            <label for="id_image" >
+                Image
+            </label>
+            <p>   
+            <input type="file" name="image" accept="image/*" class="clearablefileinput" id="id_image">   
+            </p>    
+    </div>   
+    <input type="submit" value="Save"  style="margin-block:50px;">
 </form>
-{% endblock content %}   
+{% endblock content %} 
 
 
 <!--
