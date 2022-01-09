@@ -41,7 +41,7 @@ def create_post(request):
 			new_post.content = cleaned_content
 			new_post.user = request.user
 			new_post.save()
-			form.save_m2m()
+			form.save()
 			return redirect('home')
 		
 	context.update({

@@ -33,6 +33,10 @@
                                             Profile Photo: <strong class="float-right"> <img
                                                     src="{{user.profile.image.url}}"class="rounded-circle" alt=""
                                                     width="150px" height="150px"></strong>
+                                            {%else%}
+                                            Profile Photo: <strong class="float-right"> <img
+                                                src="{{'media/default_profilepic.jpeg' }}"class="rounded-circle" alt=""
+                                                width="150px" height="150px"></strong>
                                                     {% endif %}    
                                     </li>
                                 </ul>

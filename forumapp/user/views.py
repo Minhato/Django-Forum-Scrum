@@ -88,7 +88,7 @@ def profile(request):
 			#form.save()
 			profile_obj = profile.save(update_fields=['image'])
 			messages.success(request, "Your Profile Picture was updated.")
-			return render(request, "threads.html",{'obj': profile_obj})
+			return render(request, "profile.html",{'obj': profile_obj})
 	else:
 		form=ProfileForm()	
 	return render(request, 'profile.html', {'form': form})
