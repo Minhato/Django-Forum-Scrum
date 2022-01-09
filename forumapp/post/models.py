@@ -18,16 +18,18 @@ class Post(models.Model):
     def __str__(self):
         return '%s | posted by  %s' % (self.title, self.user)
 
-class Comment(models.Model):    
+class Comment(models.Model):
     post = models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE)
-    user = models.CharField(max_length=20)
-    body = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment_content = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='replies')
 
-    def __str__(self):
-        return 'Comment by %s on %s' % (self.user, self.post.title)
+    class Meta:
+        ordering = ('-date',)
 
-def __str__(self):
-    return self.title
+    def str(self):
+        return '%s by %s on %s' % (self.comment_content, self.user, self.post.title)
+
 
 # Create your models here.

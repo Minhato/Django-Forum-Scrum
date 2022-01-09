@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.generic import DetailView
-from .models import Post
+from .models import Post, Comment
 from user.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
@@ -81,7 +81,7 @@ def create_post(request):
 
 def post_detail(request, pk):
 	posts = Post.objects.get(pk=pk)	
-	comments = posts.comments.filter(post_id=pk)
+	comments = posts.comments.filter(post_id=pk, parent=None)
 	
 	return render(request, 'post_detail.html', {'posts': posts, 'comments': comments})
 
@@ -186,19 +186,45 @@ def search_threads(request):
 	context = {'searched' :  searched, 'search' : post}
 	return render(request, 'search_threads.html', context)
 
-def create_comment(request, post_id):
-	
-	posts = Post.objects.get(pk=post_id)	
-	comments = posts.comments.filter(post_id=post_id)
+def create_comment(request):
 
-	if request.method=="POST":
-		comment_form = CommentForm(data=request.POST)
-		if comment_form.is_valid():
-			new_comment = comment_form.save(commit=False)
-			new_comment.post = posts
-			new_comment.save()
-	else:
-		comment_form = CommentForm()
+    if request.method=="POST":
+        post_id = request.POST.get('post_id')
+        post = Post.objects.get(pk=post_id)
+        user = request.user
+        comment = request.POST.get('comment_content')
+        reply = request.POST.get('reply_content')
+        parent_id = request.POST.get("parent_id")
 
-	return render(request, 'create_comment.html', {'comments': comments})
+        if parent_id == None:
+            comment_form = Comment(post=post, user=user, comment_content=comment)
+            comment_form.save()
+            messages.success(request, "Your comment has been posted successfully")
+        else:
+            comment_form = Comment(post=post, user=user,  comment_content = reply, parent_id =parent_id)
+            comment_form.save()
+            messages.success(request, "Your reply has been posted successfully")
+    else:
+        comment_form = Comment()
+        messages.success(request, "Your comment couldn't be posted")
 
+    return redirect(f'post/{post_id}')
+
+
+def delete_comment(request, comment_id):
+    comment = Comment.objects.get(pk=comment_id)
+    commentuser_id = getattr(comment, 'user_id')
+
+    post_id = getattr(comment, 'post_id')
+
+    user_obj = User.objects.get(pk=commentuser_id)
+    commentuser = getattr(user_obj, 'username')
+
+    current_user = request.user
+
+    if     str(commentuser) == str(current_user) or request.user.is_superuser:
+        messages.success(request, "Your Comment was successfully deleted")
+        comment.delete()
+    else:
+        messages.warning(request, "This Comment was published by another user. You can only delete your own!")
+    return redirect('post-detail', post_id)
