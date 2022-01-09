@@ -26,11 +26,10 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            user = Profile.objects.create(user=user)
             user.refresh_from_db()
-            user.first_name = form.cleaned_data['first_name']
-            user.last_name = form.cleaned_data['last_name']
-            user.email = form.cleaned_data['email']
+            user.profile.first_name = form.cleaned_data['first_name']
+            user.profile.last_name = form.cleaned_data['last_name']
+            user.profile.email = form.cleaned_data['email']
             user.profile.department = form.cleaned_data['department']
             user.save()
             username = form.cleaned_data.get('username')
@@ -87,9 +86,9 @@ def profile(request):
 
 		if form.is_valid():
 			form.save()
-			profile_obj = form.instance
+			profile_obj = profile.save(update_fields=['image'])
 			messages.success(request, "Your Profile Picture was updated.")
-			return render(request, "profile.html",{'obj': profile_obj})
+			return render(request, "threads.html",{'obj': profile_obj})
 	else:
 		form=ProfileForm()	
 	return render(request, 'profile.html', {'form': form})

@@ -42,8 +42,8 @@ class UpdateForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
 	class Meta:
 		model = Profile
-		fields = '__all__'
-		exclude = ['user']
+		fields = ('image',)
+		#exclude = ['department']
 
 #class CommentForm(forms.ModelForm):
 #    class Meta:
