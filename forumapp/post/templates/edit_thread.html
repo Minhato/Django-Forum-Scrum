@@ -5,7 +5,8 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
 <h1 style="text-align:center; margin-block:40px; color:white;">Hey {{user}}, Edit your Thread</h1>
-<form method="POST" enctype="multipart/form-data" style="width: 600px; margin-left: 700px; ">
+<center>
+<form method="POST" enctype="multipart/form-data" style="width: 600px; ">
     {% csrf_token %}
     <body>
         <h1 style="text-align:center; margin-block:40px; color:white;"></h1>
@@ -15,7 +16,7 @@
     </body>
     <center>
     <button type="submit", name="Edit Thread", value="Edit Thread", class="btn btn-secondary">Edit</button>
-    </center>
+</center>
     
 </form>
 {% endblock content %}   

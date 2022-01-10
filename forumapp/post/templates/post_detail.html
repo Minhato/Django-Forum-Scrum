@@ -23,7 +23,12 @@
                         <table class="table align-items-center table-flush table-borderless">
                             <thead class="thead-light">
                                 <tr>
-                                    <td style="width: 56px; height:56px; padding-left: 10;"><img src="{{posts.user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>
+                                    <td style="width: 56px; height:56px; padding-left: 10;">
+                                        {%if posts.user.profile.image%}
+                                        <img src="{{posts.user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>
+                                        {%else%}
+                                        <img src="{{'../media/default_profilepic.jpeg' }}" style="border-radius: 50%;" width="32" height="32"></td>
+                                        {%endif%}
                                     <td style="padding-left: 6px">@{{ posts.user }}</td> <!-- User des Posts hier, nicht User der angemeldet ist-->                              
                                 </tr>
                                 <tr>
