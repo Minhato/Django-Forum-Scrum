@@ -20,8 +20,8 @@ from django.contrib import admin
 
 class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True, default=0, on_delete=models.CASCADE)    
-    image = models.ImageField( upload_to="images")
-    department = models.CharField(max_length=100, blank=True) 
+    image = models.ImageField( upload_to="images", null=True)
+    department = models.CharField(max_length=100) 
     
     def __str__(self):
         return '%s' % (self.user)
