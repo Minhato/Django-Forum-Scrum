@@ -98,7 +98,6 @@ def post_detail(request, pk):
 	posts = Post.objects.get(pk=pk)	
 	comments = posts.comments.filter(post_id=pk, parent=None)
 
-
 	return render(request, 'post_detail.html', {'posts': posts, 'comments': comments})
 
 def edit_thread(request, post_id, user):

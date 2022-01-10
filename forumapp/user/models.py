@@ -39,16 +39,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return '%s by %s on %s' % (self.comment_content, self.user, self.post.title)
-
-#class Reply(models.Model):
-#    user = models.ForeignKey(User, on_delete=models.CASCADE)
-#    reply_content = models.TextField()
-#    date = models.DateTimeField(auto_now_add=True)
-#    comment = models.ForeignKey(Comment, related_name="replies", on_delete=models.CASCADE)
-
- #   class Meta:
- #       ordering = ('-date',)
-
- #   def __str__(self):
-  #      return '%s by %s on Comment: %s' % (self.reply_content, self.user, self.comment.comment_content)
-
