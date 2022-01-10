@@ -13,7 +13,7 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, related_name='forum_post_likes')
     dislikes = models.ManyToManyField(User, related_name='forum_post_dislikes')
     votes = models.IntegerField(default= 0)
-    image = models.ImageField( null = True, upload_to = 'image/%Y/%m/%D')
+    image = models.ImageField( blank = True, null = True, upload_to = 'image/%Y/%m/%D')
     
     def __str__(self):
         return '%s | posted by  %s' % (self.title, self.user)
