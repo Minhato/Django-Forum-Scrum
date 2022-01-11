@@ -73,7 +73,13 @@
                         <table id='commentsection' class="table align-items-center table-flush">
                                 {% for comment in comments %}
                                 <tr>
-                                    <td style="width: 56px; height:56px; padding-left: 10;"><img src="{{comment.user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>                             
+                                    <td style="width: 56px; height:56px; padding-left: 10;">
+                                        {%if posts.user.profile.image%}
+                                        <img src="{{posts.user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>
+                                        {%else%}
+                                        <img src="{{'../media/default_profilepic.jpeg' }}" style="border-radius: 50%;" width="32" height="32"></td> <!-- If the user has not uploaded a profile picture, the default profile picture will be displayed -->   
+                                        {%endif%}
+                                    <td style="border-radius: 50%;" width="32" height="32"></td>                             
                                     <td>by @{{ comment.user }}</td>
                                     <td>{{ comment.comment_content }}</td>
                                     <td style=" font-size: 10px; text-align: right;">replied to on: {{comment.date | date:'m/d/y'}}    </td>
