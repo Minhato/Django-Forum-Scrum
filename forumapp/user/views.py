@@ -86,8 +86,10 @@ def profile(request):
 		if form.is_valid():
 			#form.save()
 			profile_obj = profile.save(update_fields=['image'])
+			profile_obj = current_user.refresh_from_db()
 			messages.success(request, "Your Profile Picture was updated.")
 			return render(request, "profile.html",{'obj': profile_obj})
+			
 	else:
 		form=ProfileForm()	
 	return render(request, 'profile.html', {'form': form})
