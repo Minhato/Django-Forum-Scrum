@@ -171,7 +171,17 @@ def downvote_comment(request, pk):
 	print(comment.votes)
 	#return render(request,'post_detail.html', { 'all_likes': total_likes}) funktioniert nicht kp was für ein html reinkommt
 	#return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
-	return redirect('post-detail', pk)
+	return redirect('post-detail', post.pk)
+
+
+def search_threads(request):
+	if 'searched' in request.GET:
+		searched = request.GET['searched']
+		
+		if searched == '':
+			return redirect('home')
+		post = Post.objects.filter(title__icontains=searched)
+		print(post) #wird nicht zurückgegeben hier Fehler
 	
 def search_threads(request):
     if 'searched' in request.GET:
