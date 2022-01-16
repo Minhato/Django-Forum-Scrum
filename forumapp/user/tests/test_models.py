@@ -1,6 +1,6 @@
 from django.http import response
 from django.test import TestCase
-from user.models import Post
+from post.models import Post
 from django.contrib.auth.models import User
 
 class TestModel(TestCase):
