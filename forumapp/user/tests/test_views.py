@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.http import response
 from django.test import TestCase
 from django.test import Client
-from user.models import Post
+from post.models import Post
 from django.contrib.auth.models import User
 from django.urls import reverse
 
