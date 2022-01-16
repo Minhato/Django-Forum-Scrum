@@ -125,10 +125,11 @@ def downvote(request, pk):
 def search_threads(request):
 	if 'searched' in request.GET:
 		searched = request.GET['searched']
+		
+		if searched == '':
+			return redirect('home')
 		post = Post.objects.filter(title__icontains=searched)
 		print(post) #wird nicht zurückgegeben hier Fehler
-	else:	
-		post = Post.objects.all()
 	
 	context = {'searched' :  searched, 'search' : post}
 	return render(request, 'search_threads.html', context)
