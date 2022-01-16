@@ -45,7 +45,7 @@
                   <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Author</th>
-                    <th scope="col">Viewed</th>
+                    <th scope="col">Comments</th>
                     <th scope="col">Last Updated</th>
                     <th scope="col"></th>
                   </tr>
@@ -59,7 +59,7 @@
                       <small class="text-muted d-block">{{post.description}} </small>
                     </th>
                     <td>{{post.user}}</td>
-                    <td>0</td>
+                    <td>{{ post.comments.count }}</td>
                     <td>{{post.date}}</td>
                     <!-- This section is used later for Actions to the related post -->
                     <td class="text-right">

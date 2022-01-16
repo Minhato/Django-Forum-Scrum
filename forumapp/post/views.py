@@ -14,8 +14,7 @@ from .forms import CommentForm, PostForm
 from django.contrib import messages
 from django.views.generic import DetailView
 import time
-from .nlp import check_and_censor
-
+#from .nlp import check_and_censor
 
 # Create your views here.
 def home(request):
@@ -31,7 +30,8 @@ def create_post(request):
 		if form.is_valid():
 			print("\n\n its valid")
 			new_post = form.save(commit=False)
-			cleaned_content = check_and_censor(new_post.content)
+			#cleaned_content = check_and_censor(new_post.content)
+			cleaned_content = new_post.content
 			if cleaned_content == True:
 					print('in der if')
 					return redirect('home')
@@ -46,10 +46,9 @@ def create_post(request):
     })
 	return render(request, "create_post.html", context)
 
-
 def post_detail(request, pk):
 	posts = Post.objects.get(pk=pk)	
-	comments = posts.comments.filter(post_id=pk)
+	comments = posts.comments.filter(post_id=pk, parent = None)
 	
 	return render(request, 'post_detail.html', {'posts': posts, 'comments': comments})
 
@@ -122,14 +121,59 @@ def downvote(request, pk):
 	return redirect('post-detail', post.pk)
 
 
+def upvote_comment(request, pk):
+	print("upvote drin post pk =")
+	comment = get_object_or_404(Comment, id= request.POST.get('comment_id'))
+	print(comment.pk)
+	comment.likes.add(request.user)
+	print("die likes")
+	nachricht =Comment.objects.get(id = comment.pk)
+	alle_Nutzer_Dislike = comment.dislikes.all()
+	if request.user in alle_Nutzer_Dislike:
+		print("bin drin")
+		comment.dislikes.remove(request.user)
+	else:
+		print("bin nicht drin")
+	total_dislikes = nachricht.dislikes.count()
+	total_likes = nachricht.likes.count()
+	comment.votes = total_likes - total_dislikes
+	comment.save()			 
+	print(comment.votes)
+	#return render(request,'post_detail.html', { 'all_likes': total_likes}) funktioniert nicht kp was für ein html reinkommt
+	#return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
+	return redirect('post-detail', pk)
+
+def downvote_comment(request, pk):
+	print("downvote drin post pk =")
+	comment = get_object_or_404(Comment, id= request.POST.get('comment_id2'))
+	print(comment.pk)
+	comment.dislikes.add(request.user)
+	print("die dislikes")
+	nachricht =Comment.objects.get(id = comment.pk)
+	alle_Nutzer_like = comment.likes.all()
+	if request.user in alle_Nutzer_like:
+		print("bin drin")
+		comment.likes.remove(request.user)
+	else:
+		print("bin nicht drin")
+	total_dislikes = nachricht.dislikes.count()
+	total_likes = nachricht.likes.count()
+	comment.votes = total_likes - total_dislikes
+	comment.save()			 
+	print(comment.votes)
+	#return render(request,'post_detail.html', { 'all_likes': total_likes}) funktioniert nicht kp was für ein html reinkommt
+	#return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
+	return redirect('post-detail', pk)
+	
 def search_threads(request):
 	if 'searched' in request.GET:
 		searched = request.GET['searched']
 		post = Post.objects.filter(title__icontains=searched)
+		
 		print(post) #wird nicht zurückgegeben hier Fehler
 	else:	
 		post = Post.objects.all()
-	
+			
 	context = {'searched' :  searched, 'search' : post}
 	return render(request, 'search_threads.html', context)
 

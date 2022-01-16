@@ -2,7 +2,6 @@ from django.conf import settings
 from django.urls import path, include
 from . import views
 from .views import profile #, downvote, upvote, post_detail, 
-from django.conf.urls import url
 from django.conf.urls.static import static
 #from mysite.core import views as core_views
 
@@ -17,7 +16,7 @@ urlpatterns = [
     path('profile', views.profile, name='profile'),
     path('profile', views.profile, name='profile'),
     #path('create_comment//<post_id>/<user>', views.create_comment, name='create_comment'),
-    path('login', views.login, name='login'),  
+    #path('login', views.login, name='login'),  
     #path('like/<int:pk>', upvote, name= 'like_post'),
     #path('dislike/<int:pk>', downvote, name= 'dislike_post'),
     #path('search_threads', views.search_threads,name='search_threads'),
