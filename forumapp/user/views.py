@@ -68,13 +68,11 @@ def login(request):
 				login(request, user)
 				return redirect('home')	
 				#messages.info(request, f"You are now logged in as {username}.")		
-			else:
-				
+			else:				
 				messages.error(request,"Invalid username or password.")
 		else:
 			messages.error(request,"Invalid username or password.")
-	form = AuthenticationForm()
-	nachricht()				
+	form = AuthenticationForm()	
 	return render(request=request, template_name="login.html", context={"login_form":form})
 
 def profile(request):

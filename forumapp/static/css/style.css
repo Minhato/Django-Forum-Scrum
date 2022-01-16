@@ -14,9 +14,18 @@
   padding-bottom: 2px;
 }
 
+#commentsection.table.align-items-center.table-flush.badge-sm {
+  min-width: 1.9em;
+  padding: .25em !important;
+  margin-left: .1em;
+  margin-right: .1em;
+  color: white !important;
+  cursor: pointer;
+  border-width: 0px;
+}
 
 body{
-    background: white url("/static/user/images/wallpaper3.jpg") no-repeat;
+    background: white url("/media/wallpaper3.jpg") no-repeat;
     background-size: auto;
     background-position: top;
     background-attachment: fixed;
@@ -35,3 +44,4 @@ h2{
 .nav-item{
     padding-right:30px;
   }
+
