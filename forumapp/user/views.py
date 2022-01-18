@@ -21,6 +21,7 @@ import time
  #   return render(request, 'threads.html')
 
 def signup(request):
+	
     if request.method == 'POST':
 		#ruft die Methode SignupForm auf die wir geschrieben haben in forms.py 
         form = SignUpForm(request.POST)

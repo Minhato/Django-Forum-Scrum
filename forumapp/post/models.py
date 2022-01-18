@@ -4,6 +4,7 @@ from tinymce.models import HTMLField
 from user.models import User
 
 class Post(models.Model):
+    """ Model für die Threads"""
     title = models.CharField(max_length=20, unique=True)
     description = models.CharField(max_length=80)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

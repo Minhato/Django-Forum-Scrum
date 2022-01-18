@@ -72,45 +72,41 @@ def delete_post(request, post_id, user):
     return redirect('home')
 
 def totallikes(request, pk):
+    """" gibt die total likes von einem Thread zurück"""
+    #holt den Post Objekt mit der Post ID
     post = get_object_or_404(Post, id= request.POST.get('post_id'))
-    print(post.pk)
     nachricht =Post.objects.get(id = post.pk)
     total_likes = nachricht.likes.count()
     return total_likes
 
 def upvote(request, pk):
-    print("upvote drin post pk =")
+    """ zum Upvoten der Thread, wird im Model der Threads gespeichert. """
     post = get_object_or_404(Post, id= request.POST.get('post_id'))
-    print(post.pk)
     post.likes.add(request.user)
-    print("die likes")
     nachricht =Post.objects.get(id = post.pk)
     alle_Nutzer_Dislike = post.dislikes.all()
+    # zum prüfen ob Nutzer bereits im Dislike ist, wenn ja dann lösche Ihn daraus
+    # Um ein Liken und gleichzeitiges disliken zu verhindern
     if request.user in alle_Nutzer_Dislike:
-        print("bin drin")
         post.dislikes.remove(request.user)
     else:
         print("bin nicht drin")
     total_dislikes = nachricht.dislikes.count()
     total_likes = nachricht.likes.count()
+    # Speichert im Model die gesamtanzahl an likes, kann positiv oder negativ sein.
     post.votes = total_likes - total_dislikes
     post.save()			 
-    print(post.votes)
-    #return render(request,'post_detail.html', { 'all_likes': total_likes}) funktioniert nicht kp was für ein html reinkommt
-    #return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
     return redirect('post-detail', post.pk)
 
 
 def downvote(request, pk):
-    print("downvote drin post pk =")
+    """ zum Downvoten der Thread, wird im Model der Threads gespeichert."""
     post = get_object_or_404(Post, id= request.POST.get('post_id2'))
-    print(post.pk)
     post.dislikes.add(request.user)
-    print("die dislikes")
     nachricht =Post.objects.get(id = post.pk)
     alle_Nutzer_like = post.likes.all()
+    # Wenn der Thread ein Like enthält wird dieses entfernt
     if request.user in alle_Nutzer_like:
-        print("bin drin")
         post.likes.remove(request.user)
     else:
         print("bin nicht drin")
@@ -118,23 +114,19 @@ def downvote(request, pk):
     total_likes = nachricht.likes.count()
     post.votes = total_likes - total_dislikes
     post.save()			 
-    print(post.votes)
-    #return render(request,'post_detail.html', { 'all_likes': total_likes}) funktioniert nicht kp was für ein html reinkommt
-    #return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
     return redirect('post-detail', post.pk)
 
 def send_email(post_id, betreff, nachricht, email):
+    """ Zum senden einer Email, mit den parameter, post ID, Betreff, Nachricht und Email adresse. 
+    Standardmäßig wurde die googlemail hinzugefügt, die die Email versendet um zu prüfen ob es auch ankommt.
+    """
     send_mail(subject= betreff, message= nachricht, from_email= settings.EMAIL_HOST_USER, recipient_list= ['simplyforumcrew@gmail.com', email], fail_silently= False)
-    #send_mail('test mail', 'Test body', 'simplyforumcrew@gmail.com', ['simplyforumcrew@gmail.com'])
     return redirect(f'post/{post_id}')
 
 
 def upvote_comment(request, pk):
-	print("upvote drin post pk =")
 	comment = get_object_or_404(Comment, id= request.POST.get('comment_id'))
-	print(comment.pk)
 	comment.likes.add(request.user)
-	print("die likes")
 	nachricht =Comment.objects.get(id = comment.pk)
 	alle_Nutzer_Dislike = comment.dislikes.all()
 	if request.user in alle_Nutzer_Dislike:
