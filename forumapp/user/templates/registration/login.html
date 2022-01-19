@@ -18,10 +18,12 @@
                     <!-- {{form|crispy}}-->
                     <table>
                       <h1 style="text-align: center;">Login</h1>
+                      <!-- Username Field -->
                       <div class="form-group">
                         <input type="text" class="form-control" id="username" name="username" placeholder="Username">
                       </div>
                       <div class="form-group">
+                        <!-- Password Field -->
                         <input type="password" class="form-control" name="password" id="password"
                           placeholder="Password">
                       </div>
@@ -42,17 +44,5 @@
     </div>
   </div>
 </div>
-  <!--{% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
-{% endif %}
-
-{% if next %}
-  {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-  {% else %}
-    <p>Please login to see this page.</p>
-  {% endif %}
-{% endif %}-->
 
   {% endblock %}

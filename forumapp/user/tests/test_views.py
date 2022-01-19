@@ -2,11 +2,11 @@
 from django.contrib.auth import authenticate
 from django.core import mail
 from django.http import response
-from django.test import TestCase
-from django.test import Client
-from post.models import Post
-from django.contrib.auth.models import User
+from django.test import Client, TestCase
 from django.urls import reverse
+from post.models import Post
+from user.models import User
+
 
 class Testviews(TestCase):
     def setUp(self):
@@ -67,6 +67,8 @@ class Testviews(TestCase):
         )
         self.assertEqual(mail.outbox[0].subject, 'Titel')
 
+
+    
 
 
     

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<!-- HTML-template to edit an existing Post -->
+
+<!-- Include of css-file -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+
+<!-- Heading-->
+<h1 style="text-align:center; margin-block:40px; color:white;">Hey {{user}}, Edit your Post</h1>
+<center>
+<!-- Form to edit an existing Post -->
+<form method="POST" enctype="multipart/form-data" style="width: 600px; ">
+    {% csrf_token %}
+    <body>
+        <h1 style="text-align:center; margin-block:40px; color:white;"></h1>
+        <div class="container" style="color:white;">
+            <!-- Use of a django rendering form-->
+            <!-- form will wrapped rendered in <p> tags -->
+            {{form.as_p}}
+        </div>
+    </body>
+    <center>
+        <!-- Edit-Button -->
+    <button type="submit", name="Edit Post", value="Edit Post", class="btn btn-secondary">Edit</button>
+</center>
+    
+</form>
+{% endblock content %}   

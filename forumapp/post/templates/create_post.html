@@ -3,29 +3,35 @@
 {% load static %}
 {% block content %}
 
+<!-- HTML-template to create a new Post-->
+
+<!-- Include of css-file -->
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
 <center>
+  <!--Heading -->
 <h1 style="text-align:center; margin-block:50px; color:white;">Hey {{user}}, Write something</h1>
 </center>
-<!-- This is the Form for the Post-->
+<!-- Form to create a new Post -->
 <center>
 <form method="POST" enctype="multipart/form-data" style="width: 600px; color:white;">
     <input type="hidden" name="csrfmiddlewaretoken" value="nYapeT1XWYeCZjCjMHzqxpbn6wP4hkIjHOVQL8ykF5goTR4JewRCH658E9z9JH3i"> 
-    <center>   
+    <center>
+    <!-- TextInputField for Post Title -->     
     <div id="div_id_title" class="ctrlHolder error">            
             <label for="id_title" class="requiredField">
                 Title<span class="asteriskField">*</span>
             </label>
-            <input type="text" name="title" class="form-control textinput textInput" maxlength="20" required id="id_title">    
+            <input type="text" name="title" class="form-control textinput textInput" maxlength="80" required id="id_title">    
     </div>
-
+    <!-- TextInputField for Post Content -->     
     <div id="div_id_content" class="ctrlHolder error">            
             <label for="id_content" class="requiredField">
                 Content<span class="asteriskField">*</span>
             </label>        
-            <textarea name="content" cols="40" rows="10" col="50" class="form-control textarea" required id="id_content">
+            <textarea name="content" cols="40" rows="10" col="50" class="form-control textarea" maxlength="1500" required id="id_content">
 </textarea>        
     </div>
+     <!-- UploadField for Image -->  
     <div id="div_id_image" class="ctrlHolder">
             <label for="id_image" >
                 Image
@@ -33,40 +39,12 @@
             <p>   
             <input type="file" name="image" accept="image/*" class="clearablefileinput" id="id_image">   
             </p>    
-    </div>   
+    </div>
+    <!-- Save Button -->  
     <input type="submit" value="Save"  style="margin-block:50px;">
   </center>
 </center>
 </form>
 {% endblock content %} 
-
-
-<!--
-This is the Form for the Post
-<form method="post">
-    {% csrf_token %}
-Schleife um alle Forms zu laden 
-    <center style="text-align:center; margin-block:50px">
-    {% for field in form %}
-      <p>
-        {{ field.label_tag }}
-        {{ field }}
-        {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      </p>
-    {% endfor %}
-    <input type="submit" value="Save"  style="margin-block:50px;">
-    </center>
-</form>
-
--->
-
-
-
-
 
 
