@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+<body>
+    <!-- Only show the Posts if the User is logged in-->
+    {% if user.is_authenticated%}
+    <div class="main-content">
+      <div class="container mt-7">
+        <!-- Here Heading -->
+        <h2 class="mb-5">Hello {{user}}, you searched for {{searched}}</h2>
+        <!-- Here the Table begins -->
+        <div class="row">
+          <div class="col">
+            <div class="card shadow">
+              <div class="card-header border-0">
+                <!-- Table Header -->
+                <h3 class="mb-0" style="float:left">Posts</h3>
+                <ul>
+                <form class="searchfield" style="float:right" action={% url 'search_post' %} method="GET">
+                    <div>
+                      <input type="text"   value="{{request.GET.searched}}" name="searched" id="search_post" placeholder="Search in title..."> 
+                      <button id="search-button" class="btn btn-secondary" type="submit">Search</button>
+                    </div>
+                </form>  
+                </ul>            
+              </div>
+              <div class="table-responsive">
+                <table class="table align-items-center table-flush">
+                  <thead class="thead-light">
+                    <!-- Table Headings per Row -->
+                    <tr>
+                      <th scope="col">Title</th>
+                      <th scope="col">Author</th>
+                      <th scope="col">Comments</th>
+                      <th scope="col">Last Updated</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Get all the Posts from the database and show them in the table -->
+                    {% for post in search %}
+                    <tr>
+                      <th scope="row">
+                        <a>{{post.title}}</a>
+                        <small class="text-muted d-block">{{post.description}} </small>
+                      </th>
+                      <td>{{post.user}}</td>
+                      <td>{{ post.comments.count }}</td>
+                      <td>{{post.date}}</td>
+                      <!-- This section is used later for Actions to the related post -->
+                      <td class="text-right">
+                        <div class="dropleft">
+                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"  aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{% url 'post-detail' post.pk %}">View Post</a>
+                            <a class="dropdown-item" href="{% url 'delete-post' post.id user %}">Delete Post</a>
+                            <a class="dropdown-item" href="{% url 'edit_post' post.id user %}">Edit Post</a>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    {%endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {%endif%}
+  
+  </body>
+  {% endblock %}  
+
+
+

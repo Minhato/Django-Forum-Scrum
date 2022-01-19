@@ -2,31 +2,22 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
-from .models import Profile 
-#, Comment Post
 
+from .models import Profile
+
+# Form for user is defined
 class SignUpForm(UserCreationForm):
     letters = RegexValidator(r'^[a-zA-Z]+$', 'Only letter characters are allowed.')
     # erweitert um die Felder und erbt von UsercreationForm, nötig da UserCreation form nur Username und Passwort enthält.
     first_name = forms.CharField(max_length=30, help_text='required.', validators=[letters])
-    #first_name = forms.CharField(max_length=30, required=True,widget=forms.TextInput(attrs={'class':'form-control' , 'autocomplete': 'off','pattern':'[A-Za-z ]+', 'title':'Enter Characters Only '}))
     last_name = forms.CharField(max_length=30, help_text='required.', validators=[letters]) 
     email = forms.EmailField(max_length=254, help_text='required. Enter a valid email address.')
     CHOICES = (('IT', 'IT'),('Marketing', 'Marketing'),('Accounting', 'Accounting'))
     department = forms.ChoiceField(choices=CHOICES)
-    #department = forms.CharField(max_length=30, required=True, help_text='required')
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'department')
 
-#class PostForm(forms.ModelForm):
-#    class Meta:
-#        model = Post
-#        fields = ["title", "content", "image"]
-#        widgets = {
-#            'title': forms.TextInput(attrs={'class': 'form-control'}),
-#            'content': forms.Textarea(attrs={'col': 50, 'class': 'form-control'}),           
-#        }
 
 class UpdateForm(forms.ModelForm):    
     class Meta:
@@ -34,19 +25,8 @@ class UpdateForm(forms.ModelForm):
         fields = ['username']
 
 
-#class ProfileForm(forms.ModelForm):
- #   class Meta:
-  #      model = Profile
-   #     fields = ('image', )
-
 class ProfileForm(forms.ModelForm):
 	class Meta:
 		model = Profile
 		fields = ('image',)
 		#exclude = ['department']
-
-#class CommentForm(forms.ModelForm):
-#    class Meta:
-#        model = Comment
-#        fields = ('body', )
-#        fields = ('body', )

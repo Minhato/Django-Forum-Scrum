@@ -11,8 +11,9 @@
             <div class="col">
                 <div class="card shadow">
                     <div class="card-header border-0" style="padding-left: 10px;">
-                    <!-- Table Header -->
+                    <!-- Table  -->
                         <table>
+                            <!-- Post Title  -->
                             <tr>
                                 <td style="width: 40px;"><i class="bi bi-chat bi-large" style="font-size: 1.75rem;"></i></td>
                                 <td><h3 class="mb-0">{{ posts.title }}</h3></td>
@@ -23,8 +24,9 @@
                         <table class="table align-items-center table-flush table-borderless">
                             <thead class="thead-light">
                                 <tr>
+                                    <!-- User Profile -->
                                     <td style="width: 56px; height:56px; padding-left: 10;">
-                                        {%if posts.user.profile.image%}
+                                        {% if posts.user.profile.image %}
                                         <img src="{{posts.user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>
                                         {%else%}
                                         <img src='../media/default_profile_pic.png' style="border-radius: 50%;" width="32" height="32"></td> <!-- If the user has not uploaded a profile picture, the default profile picture will be displayed -->   
@@ -34,16 +36,17 @@
                                 <tr>
                                     <td colspan="4" style="padding-left: 60px;">{{posts.content}}</td>
                                 </tr>
-
+                                <!-- Image of Post if exists -->
                                 {% if posts.image %}
                                 <tr>
                                 <td colspan="4" style="padding-left: 60px;"><img src="{{posts.image.url}}" width="300" height="200"></td> 
                                 </tr>
                                 {% endif %}
-
+                                <!-- Post Date -->
                                 <tr>
                                     <td colspan="4" style="padding-top: 40px; font-size: 10px; text-align: right;">posted on: {{posts.date |date:'m/d/y'}}</td>
                                 </tr><br>
+                                <!-- Upvote/Downvote Section -->
                                 <tr>
                                     <td colspan="2">
                                         <form action="{% url 'like_post' posts.pk %}" method="POST" style="display: inline;">
@@ -56,6 +59,7 @@
                                         <button type="submit", name="post_id2", value="{{posts.id}}", class="btn btn-secondary btn-sm">  &#128078 </button>
                                         </form>
                                     </td>
+                                    <!-- Create Comment Section -->
                                     <td>
                                         <form action="/create_comment" method="post">
                                             {% csrf_token %}
@@ -70,25 +74,33 @@
                                 </tr>                                                                                         
                             </thead>
                         </table>
+                        <!-- Table of the Comments -->
                         <table id='commentsection' class="table align-items-center table-flush">
                                 {% for comment in comments %}
                                 <tr>
+                                    <!-- Profile Image of Comment User -->
                                     <td style="width: 56px; height:56px; padding-left: 10;">
-                                        {%if posts.user.profile.image%}
-                                        <img src="{{posts.user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>
+                                        {%if comment.user.profile.image%}
+                                        <img src="{{comment.user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>
                                         {%else%}
                                         <img src='../media/default_profile_pic.png' style="border-radius: 50%;" width="32" height="32"></td> <!-- If the user has not uploaded a profile picture, the default profile picture will be displayed -->   
                                         {%endif%}
-                                    <td style="border-radius: 50%;" width="32" height="32"></td>                             
+                                    <td style="border-radius: 50%;" width="32" height="32"></td>
+                                    <!-- Comment Username -->                           
                                     <td>by @{{ comment.user }}</td>
+                                    <!-- Comment Contett --> 
                                     <td>{{ comment.comment_content }}</td>
                                     <td style=" font-size: 10px; text-align: right;">replied to on: {{comment.date | date:'m/d/y'}}</td>
                                     <td>
+                                        <!-- Deleze Button --> 
                                         {% if request.user == comment.user or request.user.is_superuser %}
                                         <a href="{% url 'delete-comment' comment.id %}" class="badge badge-danger">Delete</a>
                                         {% endif %}
+                                        <br>
+                                         <!-- Create Reply to Comment Section  -->
                                         <a href="" class="badge badge-secondary" data-toggle="collapse" data-target="#replyBox{{comment.id}}" aria-expanded="false" aria-controls="replyBox{{comment.id}}">Reply</a>
-                                        <!--<button  type="button" class="btn btn-danger">Danger</button>  --> 
+                                        <!-- Upvote/Downvote Comment Section -->
+                                        <br>
                                         <form action="{% url 'like_comment' posts.id %}" method="POST" style="display: inline;">
                                             {% csrf_token %}
                                         <button type="submit", name="comment_id", value="{{comment.id}}", class="badge badge-secondary badge-sm">  &#128077</button>
@@ -98,6 +110,7 @@
                                             {% csrf_token %}
                                         <button type="submit", name="comment_id2", value="{{comment.id}}", class="badge badge-secondary badge-sm">  &#128078 </button>
                                         </form>
+                                         <!-- Collapsed it the Reply Button isd clicked  -->
                                         <div class="collapse" id="replyBox{{comment.id}}">
                                                 <form action="/create_comment" method="post">
                                                     {% csrf_token %}
@@ -111,11 +124,12 @@
                                         </div>                                                                          
                                     </td>
                                 </tr>
+                                <!-- Reply Section -->
                                 {% for reply in comment.replies.all %}
                                 <tr id='replycontent'>
                                     <td></td>
                                     <td style="width: 116px; height:56px; padding-left: 10;">
-                                        {%if posts.user.profile.image%}
+                                        {%if reply.user.profile.image%}
                                         <img src="{{reply.user.profile.image.url}}" style="border-radius: 50%;" width="32" height="32"></td>
                                         {%else%}
                                         <img src='../media/default_profile_pic.png' style="border-radius: 50%;" width="32" height="32"></td> <!-- If the user has not uploaded a profile picture, the default profile picture will be displayed -->   
@@ -131,6 +145,7 @@
                                 </tr>
                                 {% endfor %}                            
                                 
+                                <!-- If there are no comments -->
                                 {% empty %}
                                     <h4 style="margin-bottom: 0px; text-align: center;">There are no comments yet.</h4>                                                                
                                 {% endfor %} 
