@@ -41,34 +41,3 @@ class UserModelTest(TestCase):
     #    field_label = user._meta.get_field('department').verbose_name
     #    print(field_label)
     #    self.assertEqual(field_label, 'department')
-
-
-"""     def test_post_title(self):
-        post_title = Post.objects.get(id=1)
-        field_label = post_title._meta.get_field('title').verbose_name
-        self.assertEqual(field_label, 'title')
-
-    def test_post_description(self):
-        board_description = Post.objects.get(id=1)
-        field_label = board_description._meta.get_field('description').verbose_name
-        self.assertEqual(field_label, 'description')
-
-    def test_comment_content(self):
-        comment = Comment.objects.get(id=1)
-        field_label = comment._meta.get_field('comment_content').verbose_name
-        self.assertEqual(field_label, 'comment content')
-
-    def test_comment_date(self):
-        comment = Comment.objects.get(id=1)
-        field_label = comment._meta.get_field('date').verbose_name
-        self.assertEqual(field_label, 'date')
-
-    def test_comment_votes(self):
-        comment = Comment.objects.get(id=1)
-        field_label = comment._meta.get_field('votes').verbose_name
-        self.assertEqual(field_label, 'votes')
-
-    def test_comment_parent(self):
-        comment = Comment.objects.get(id=1)
-        field_label = comment._meta.get_field('parent').verbose_name
-        self.assertEqual(field_label, 'parent') """

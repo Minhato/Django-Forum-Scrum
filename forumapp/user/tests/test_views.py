@@ -1,4 +1,3 @@
-
 from django.contrib.auth import authenticate
 from django.core import mail
 from django.http import response
